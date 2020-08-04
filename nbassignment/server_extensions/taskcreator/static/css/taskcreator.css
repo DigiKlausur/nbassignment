@@ -1,0 +1,54 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #000;
+}
+
+#create_question {
+  margin-left: 3em;
+}
+
+#create_question a {
+  border: 1px solid #dae4e7;
+  padding: .5em;
+  background-color: #eaf4f7;
+  text-decoration: none;
+  margin-left: -9px;
+  color: #333;
+}
+
+.e2xtable {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 1em;
+  border: 1px solid #ddd;
+}
+
+.e2xtable td {
+  text-align: left;
+  padding: .5em;
+}
+
+.e2xtable tr:nth-child(odd) {
+  background-color: #f8fbfc;
+}
+
+.e2xtable tr:nth-child(even) {
+  background-color: #eaf4f7;
+}
+
+.e2xtable .column2 {
+  float: right;
+}
+
+.e2xtable select {
+  height: 2.5em;
+  width: 15em;
+  border: 1px solid #bbb;
+}
+
+.e2xtable input {
+  height: 2.5em;
+  width: 15em;
+}

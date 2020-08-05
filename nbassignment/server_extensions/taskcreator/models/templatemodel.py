@@ -1,5 +1,6 @@
 import os
 import nbformat
+import shutil
 
 class TemplateModel:
 
@@ -19,3 +20,17 @@ class TemplateModel:
         url = os.path.join('/', 'notebooks', 'templates', name, filename)
 
         return url
+
+    def delete_template(self, name):
+        shutil.rmtree(os.path.join('templates', name))
+
+    def get_templates(self):
+        templatefolders = os.listdir('templates')
+        templates = []
+        for templatefolder in templatefolders:
+            templates.append({
+                'name': templatefolder,
+                'link': os.path.join('tree', 'templates', templatefolder)
+            })
+        
+        return templates

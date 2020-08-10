@@ -24,7 +24,6 @@ define([
             li.append($('<a/>').append(option[0]));
             li.click(function () {
                 dialogs.insert_task(option[0], option[1]);
-                //tasks.insert_task(option[1]);
             })
             menu.append(li);
         })

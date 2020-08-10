@@ -1,0 +1,54 @@
+import os
+import nbformat
+import shutil
+
+class TaskModel:
+
+    def new(self, name, pool):
+        base_path = os.path.join('pools', pool)
+        os.makedirs(os.path.join(base_path, name, 'img'), exist_ok=True)
+        os.makedirs(os.path.join(base_path, name, 'data'), exist_ok=True)
+        filename = '{}.ipynb'.format(name)
+        nb = nbformat.v4.new_notebook()
+        nb.metadata['nbassignment'] = {
+            'type': 'task'
+        }
+        path = os.path.join(base_path, name, filename)
+        nbformat.write(nb, path)
+        url = os.path.join('/', 'notebooks', base_path, name, filename)
+
+        return url
+
+    def remove(self, name, pool):
+        base_path = os.path.join('pools', pool)
+        shutil.rmtree(os.path.join(base_path, name))
+    
+    def list(self, pool):
+        base_path = os.path.join('pools', pool)
+        taskfolders = os.listdir(base_path)
+        tasks = []
+        for taskfolder in taskfolders:
+            points, questions = self.__get_task_info(taskfolder, pool)
+            tasks.append({
+                'name': taskfolder,
+                'points': points,
+                'questions': questions,
+                'link': os.path.join('tree', base_path, taskfolder)
+            })
+        
+        return tasks
+
+    def __get_task_info(self, task, pool):
+        base_path = os.path.join('pools', pool)
+        notebooks = [file for file in os.listdir(os.path.join(base_path, task)) if file.endswith('.ipynb')]
+
+        points = 0
+        questions = 0
+
+        for notebook in notebooks:
+            nb = nbformat.read(os.path.join(base_path, task, notebook), as_version=4)
+            for cell in nb.cells:
+                if 'nbgrader' in cell.metadata and cell.metadata.nbgrader.grade:
+                    points += cell.metadata.nbgrader.points
+                    questions += 1
+        return points, questions

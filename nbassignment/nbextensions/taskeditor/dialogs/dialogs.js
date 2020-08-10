@@ -20,12 +20,19 @@ define([
         var body = $('<div/>');
         var table = $('<table/>').addClass('e2xtable');
 
+        var id = 'task_' + randomString(6);
+        if (type === 'student_info') {
+            id = 'student_info';
+        } else if (type === 'group_info') {
+            id = 'group_info';
+        }
+
         var row1 = $('<tr/>');
         row1.append($('<td/>').append($('<span/>').text('Name:')));
         row1.append($('<td/>').addClass('column2').append($('<input/>')
             .attr('type', 'text')
             .attr('id', 'templatename')
-            .val('task_' + randomString(6))));
+            .val(id)));
         table.append(row1);
 
         var row3 = $('<tr/>');

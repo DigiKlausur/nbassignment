@@ -33,12 +33,11 @@ button:hover {
   border-spacing: 0;
   margin-bottom: 1em;
   border: 1px solid #ddd;
+  min-width: 50%;
 }
-
-
-
+ 
 .e2xtable td {
-  text-align: left;
+  text-align: center;
   padding: .5em;
 }
 
@@ -72,23 +71,6 @@ button:hover {
 #taskdiv {
   margin: auto;
 }
-
-#tasktable {
-  min-width: 50%;
-}
-
-#tasktable td {
-  text-align: center;
-}
-
-#templatetable {
-  min-width: 50%;
-}
-
-#templatetable td {
-  text-align: center;
-}
-
 
 .modal {
   position: fixed;
@@ -134,4 +116,12 @@ button:hover {
   border-top: 1px solid #bbb;
   min-height: 2em;
   padding: 1em;
+}
+
+.breadcrumbs li {
+  display: inline-block;
+}
+
+.breadcrumbs ul {
+  padding: 0em;
 }

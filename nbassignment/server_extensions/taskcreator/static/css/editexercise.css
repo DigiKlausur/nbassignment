@@ -1,0 +1,23 @@
+#tasks td {
+  text-align: center;
+}
+
+.mid-col {
+  width: 20%;
+}
+
+.mid-col button {
+  display: block;
+  
+}
+.side-col {
+  width: 40%;
+}
+
+#selected-tasks {
+  width: 100%;
+}
+
+#pool-tasks {
+  width: 100%;
+}

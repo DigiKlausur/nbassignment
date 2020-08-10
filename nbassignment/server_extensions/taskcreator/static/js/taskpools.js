@@ -1,6 +1,6 @@
 import Modal from "./modal.js";
 
-function addTemplate() {
+function addPool() {
 
     let body = $('<div/>');
     let table = $('<table/>').addClass('e2xtable');
@@ -8,44 +8,45 @@ function addTemplate() {
     row.append($('<td/>').text('Name'));
     let name_input = $('<input/>')
                         .attr('type', 'text')
-                        .attr('id', 'template-name');
+                        .attr('id', 'pool-name');
     row.append($('<td/>').append(name_input));
     table.append(row);
     body.append(table);
 
     let buttons = {
-        'Add Template': {
+        'Add Taskpool': {
             click: function () {
-                window.open("/taskcreator/templates/new/" + $('#template-name').val());
+                window.open("/taskcreator/pools/new/" + $('#pool-name').val());
                 location = location;
             },
-            id: 'add-template-btn'
+            id: 'add-pool-btn'
         },
         'Cancel': {}
     };
 
-    let title = 'Add Template';
+    let title = 'Add Taskpool';
 
     new Modal(title, body, buttons).open();
 }
 
-function deleteTemplate(name) {
+function deletePool(name) {
 
     let body = $('<div/>');
-    body.append($('<span/>').text('Do you want to delete the template ' + name + '?'))
+    body.append($('<p/>').text('Do you want to delete the taskpool ' + name + '?'));
+    body.append($('<p/>').text('This will delete all tasks in this pool!'));
     
 
     let buttons = {
-        'Delete Template': {
+        'Delete Taskpool': {
             click: function () {
-                window.open("/taskcreator/templates/remove/" + name, '_self');
+                window.open("/taskcreator/pools/remove/" + name, '_self');
             },
-            id: 'delete-template-btn'
+            id: 'delete-pool-btn'
         },
         'Cancel': {}
     };
 
-    let title = 'Delete Template';
+    let title = 'Delete Taskpool';
 
     new Modal(title, body, buttons).open();
 }
@@ -56,40 +57,42 @@ function make_fa_button(cls, click) {
     return btn;
 }
 
-export default function addTemplateTable(templates) {
+export default function addTaskPoolTable(pools) {
     let table = $('<table/>')
         .addClass('e2xtable')
-        .attr('id', 'templatetable');
+        .attr('id', 'taskpooltable');
     let head = $('<thead/>');
     let header = $('<tr/>');
-    const columns = ['Name', 'Edit', 'Delete'];
+    const columns = ['Name', '# of Tasks', 'Edit', 'Delete'];
     columns.forEach(function (column) {
         header.append($('<th/>').text(column));
     })
     table.append(head.append(header));
     let body = $('<tbody/>');
-    templates.forEach(function (template) {
+    pools.forEach(function (pool) {
         let row = $('<tr/>');
-        row.append($('<td/>').text(template.name));
+        //row.append($('<td/>').text(pool.name));
+        row.append($('<td/>').append($('<a/>').attr('href', '/' + pool.link).text(pool.name)));
+        row.append($('<td/>').text(pool.tasks));
         row.append($('<td/>').append(
-            make_fa_button('fa fa-edit', () => window.open('/' + template.link, '_blank'))
+            make_fa_button('fa fa-edit', () => window.open('/' + pool.link, '_blank'))
         ));
         row.append($('<td/>').append(
-            make_fa_button('fa fa-trash-alt', () => deleteTemplate(template.name))
+            make_fa_button('fa fa-trash-alt', () => deletePool(pool.name))
         ));
         body.append(row);
     });
     table.append(body);
 
-    let add_template = $('<button/>')
+    let add_pool = $('<button/>')
         .addClass('e2xbutton')
-        .attr('id', 'add-template')
-        .text('Add Template')
-        .click(addTemplate);
+        .attr('id', 'add-pool')
+        .text('Add Taskpool')
+        .click(addPool);
 
-    let div = $('<div/>').attr('id', 'templatediv');
+    let div = $('<div/>').attr('id', 'taskdiv');
     div.append(table);
-    div.append(add_template);
+    div.append(add_pool);
 
     $('.body').append(div);
 }

@@ -26,7 +26,8 @@
     <div class="sidebar">
     {%- block sidebar -%}
     <h3>nbassignment</h3>
-    <a href="{{ base_url }}/taskcreator/tasks" id="task-link">Manage Tasks</a>
+    <a href="{{ base_url }}/taskcreator/assignments" id="exercise-link">Manage Exercises</a>
+    <a href="{{ base_url }}/taskcreator/pools" id="task-link">Manage Tasks</a>
     <a href="{{ base_url }}/taskcreator/templates" id="template-link">Manage Templates</a>
     {%- endblock -%}
     </div>

@@ -1,6 +1,6 @@
 import Modal from "./modal.js";
 
-function addTask() {
+function addTask(pool) {
 
     let body = $('<div/>');
     let table = $('<table/>').addClass('e2xtable');
@@ -16,7 +16,7 @@ function addTask() {
     let buttons = {
         'Add Task': {
             click: function () {
-                window.open("/taskcreator/new_task/" + $('#task-name').val());
+                window.open("/taskcreator/pools/" + pool + "/new/" + $('#task-name').val());
                 location = location;
             },
             id: 'add-task-btn'
@@ -29,7 +29,7 @@ function addTask() {
     new Modal(title, body, buttons).open();
 }
 
-function deleteTask(name) {
+function deleteTask(name, pool) {
 
     let body = $('<div/>');
     body.append($('<span/>').text('Do you want to delete the task ' + name + '?'))
@@ -38,7 +38,7 @@ function deleteTask(name) {
     let buttons = {
         'Delete Task': {
             click: function () {
-                window.open("/taskcreator/delete_task/" + name, '_self');
+                window.open("/taskcreator/pools/" + pool + "/remove/" + name, '_self');
             },
             id: 'delete-task-btn'
         },
@@ -56,7 +56,7 @@ function make_fa_button(cls, click) {
     return btn;
 }
 
-export default function addTaskTable(tasks) {
+export default function addTaskTable(tasks, pool) {
     let table = $('<table/>')
         .addClass('e2xtable')
         .attr('id', 'tasktable');
@@ -77,7 +77,7 @@ export default function addTaskTable(tasks) {
             make_fa_button('fa fa-edit', () => window.open('/' + task.link, '_blank'))
         ));
         row.append($('<td/>').append(
-            make_fa_button('fa fa-trash-alt', () => deleteTask(task.name))
+            make_fa_button('fa fa-trash-alt', () => deleteTask(task.name, pool))
         ));
         body.append(row);
     });
@@ -87,7 +87,9 @@ export default function addTaskTable(tasks) {
         .addClass('e2xbutton')
         .attr('id', 'add-task')
         .text('Add Task')
-        .click(addTask);
+        .click(function () {
+            addTask(pool);
+        });
 
     let div = $('<div/>').attr('id', 'taskdiv');
     div.append(table);

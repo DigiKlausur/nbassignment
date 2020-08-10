@@ -7,7 +7,7 @@ class TemplateModel:
     def __init__(self):
         pass
 
-    def new_template(self, name):
+    def new(self, name):
         os.makedirs(os.path.join('templates', name, 'img'), exist_ok=True)
         os.makedirs(os.path.join('templates', name, 'data'), exist_ok=True)
         filename = '{}.ipynb'.format(name)
@@ -21,10 +21,10 @@ class TemplateModel:
 
         return url
 
-    def delete_template(self, name):
+    def remove(self, name):
         shutil.rmtree(os.path.join('templates', name))
 
-    def get_templates(self):
+    def list(self):
         templatefolders = os.listdir('templates')
         templates = []
         for templatefolder in templatefolders:

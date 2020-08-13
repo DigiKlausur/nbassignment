@@ -3,8 +3,9 @@
 {% block head %}
 <link rel="stylesheet" href="{{ base_url }}/taskcreator/static/css/editexercise.css" type="text/css">
 <script type="module">    
-    import {addTaskSelector, generateExercise} from "{{ base_url }}/taskcreator/static/js/editexercise.js";
+    import {addTaskSelector, generateExercise, templateOptions} from "{{ base_url }}/taskcreator/static/js/editexercise.js";
     addTaskSelector({{ pools }});
+    templateOptions();
     generateExercise("{{ exercise }}", "{{ assignment }}");
 </script>
 {% endblock head %}
@@ -32,10 +33,13 @@
         <h3>1. Template</h3>
         <label for="template">Choose a template:</label>
         <select name="template" id="template">
+            <option value="">Choose a template</option>
             {% for template in templates %}
                 <option value="{{ template.name }}">{{ template.name }}</option>
             {% endfor %}
         </select>
+        <div id="template-options">
+        </div>
     </div>
     <div id="task-select">
         <h3>2. Tasks</h3>

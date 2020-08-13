@@ -1,5 +1,6 @@
 from traitlets.config import LoggingConfigurable
 from traitlets import Unicode
+from .prepare_template import NotebookVariableReplacer
 import nbformat
 import os
 
@@ -13,12 +14,12 @@ class GenerateExercise(LoggingConfigurable):
             return cell.metadata.nbassignment.type
         return None
 
-    def generate(self, assignment, name, template, tasks):
+    def generate(self, assignment, name, template, tasks, template_options):
         exercise = nbformat.v4.new_notebook()
 
-        template_nb = nbformat.read(
-            os.path.join(self.template_path, template, '{}.ipynb'.format(template)),
-            as_version=4)
+        template_path = os.path.join(self.template_path, template, '{}.ipynb'.format(template))
+
+        template_nb =  NotebookVariableReplacer().replace(template_path, template_options)
 
         header = [cell for cell in template_nb.cells \
                   if self.get_cell_type(cell) in ['header', 'student_info', 'group_info']]

@@ -6,6 +6,7 @@ from tornado import web
 from .base import BaseApiHandler, check_xsrf, check_notebook_dir
 from ...models import TaskModel
 from ...converters import GenerateExercise
+from ...extractors import NotebookVariableExtractor
 
 
 class StatusHandler(BaseApiHandler):
@@ -31,12 +32,22 @@ class GenerateExerciseHandler(BaseApiHandler):
             resources['assignment'], 
             resources['exercise'], 
             resources['template'], 
-            resources['tasks']
+            resources['tasks'],
+            resources['template-options']
         )
         self.write({"status": True})
+
+class TemplateVariableHandler(BaseApiHandler):
+    @web.authenticated
+    @check_xsrf
+    def get(self):
+        template = self.get_argument("template");
+        variables = NotebookVariableExtractor().extract(os.path.join('templates', template, '{}.ipynb'.format(template)))
+        self.write(json.dumps(variables))
         
 default_handlers = [
     (r"/taskcreator/api/status", StatusHandler),
     (r"/taskcreator/api/tasks", ListTasksHandler),
-    (r"/taskcreator/api/generate_exercise", GenerateExerciseHandler)
+    (r"/taskcreator/api/generate_exercise", GenerateExerciseHandler),
+    (r"/taskcreator/api/templates/variables", TemplateVariableHandler)
 ]

@@ -1,3 +1,63 @@
+function addOptionsTable(options) {
+    
+    if (options.length < 1) {
+        return;
+    }
+    let table = $('<table/>')
+        .addClass('e2xtable')
+        .attr('id', 'templateoptionstable');
+    let head = $('<thead/>');
+    let header = $('<tr/>');
+    const columns = ['Name', 'Value'];
+    columns.forEach(function (column) {
+        header.append($('<th/>').text(column));
+    })
+    table.append(head.append(header));
+    let body = $('<tbody/>');
+    options.forEach(function (option) {
+        let row = $('<tr/>');
+        row.append($('<td/>').text(option));
+        row.append($('<td/>')
+            .append($('<input/>')
+                .attr('type', 'text')
+                .attr('id', option)));
+        body.append(row);
+    });
+    table.append(body);
+
+    $('#template-options').append($('<p/>').text('You can use variables in templates using {{ var }}. Here you can set the values!'));
+    $('#template-options').append(table);
+}
+
+export function templateOptions() {
+    let template = $('#template');
+    if (template.length > 0) {
+        template.change(function () {
+            let choosen = $(this).val();
+            $('#template-options').empty();
+            if (choosen != '') {
+                $.ajax({
+                    url: "/taskcreator/api/templates/variables",
+                    type: "get",
+                    data: {
+                        'template': choosen
+                    },
+                    success: function(response) {
+                        let options = $.parseJSON(response);
+                        console.log(options);
+                        addOptionsTable(options);
+                    },
+                    error: function(xhr) {
+                        console.log('Oh no!')
+                        console.log(xhr)
+                    }
+                });
+            }
+
+        });
+    }
+}
+
 export function generateExercise(exercise, assignment) {
     let generate_button = $('<button/>')
         .attr('id', 'generate-exercise')
@@ -10,8 +70,14 @@ export function generateExercise(exercise, assignment) {
             tasks.push($(this).val());
         });
         $(this).prop('disabled', true);
+        let template_options = {};
+        $('#template-options input').each(function () {
+            template_options[$(this).attr('id')] = $(this).val();
+        });
+        console.log(template_options);
         let data = JSON.stringify({
             'template': template,
+            'template-options': template_options,
             'tasks': tasks,
             'exercise': exercise,
             'assignment': assignment

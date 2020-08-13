@@ -21,3 +21,17 @@
 #pool-tasks {
   width: 100%;
 }
+
+#template-options {
+    margin-top: 1em;
+}
+
+select[name=pool] {
+  margin-left: 1em;
+}
+
+.mid-col button {
+  width: 6em;
+  margin: auto;
+  margin-top: .5em;
+}

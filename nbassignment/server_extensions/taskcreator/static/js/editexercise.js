@@ -77,7 +77,7 @@ export function generateExercise(exercise, assignment) {
         console.log(template_options);
         let data = JSON.stringify({
             'template': template,
-            'template-options': template_options,
+            'template_options': template_options,
             'tasks': tasks,
             'exercise': exercise,
             'assignment': assignment

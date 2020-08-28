@@ -1,18 +1,47 @@
 import os
 import nbformat
 import shutil
+from textwrap import dedent
 
 class TaskModel:
+
+    def new_taskbook(self, name):
+        nb = nbformat.v4.new_notebook()
+        
+        nb.metadata['nbassignment'] = {
+            'type': 'task'
+        }
+        header = nbformat.v4.new_markdown_cell()
+        
+        header.source = dedent("""
+        # {}
+        
+        Here you should give the general information about the task.
+        
+        Then add questions via the menu above.
+        
+        A task should be self contained.
+        """.format(name))
+        
+        header.metadata['nbgrader'] = {
+            'grade_id': '{}_Header'.format(name),
+            'locked': True,
+            'solution': False,
+            'grade': False,
+            'task': False,
+            'schema_version': 3
+        }
+        
+        nb.cells = [header]
+        
+        return nb
 
     def new(self, name, pool):
         base_path = os.path.join('pools', pool)
         os.makedirs(os.path.join(base_path, name, 'img'), exist_ok=True)
         os.makedirs(os.path.join(base_path, name, 'data'), exist_ok=True)
         filename = '{}.ipynb'.format(name)
-        nb = nbformat.v4.new_notebook()
-        nb.metadata['nbassignment'] = {
-            'type': 'task'
-        }
+        nb = self.new_taskbook(name)
         path = os.path.join(base_path, name, filename)
         nbformat.write(nb, path)
         url = os.path.join('/', 'notebooks', base_path, name, filename)

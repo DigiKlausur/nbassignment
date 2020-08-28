@@ -1,2 +1,2 @@
 from .notebookfilefinder import NotebookFileFinder
-from .copyadditionalfiles import CopyAdditionalFiles
+from .notebookvariableextractor import NotebookVariableExtractor

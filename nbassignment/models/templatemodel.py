@@ -5,7 +5,7 @@ import shutil
 class TemplateModel:
 
     def __init__(self):
-        pass
+        os.makedirs('templates', exist_ok=True)
 
     def new(self, name):
         os.makedirs(os.path.join('templates', name, 'img'), exist_ok=True)

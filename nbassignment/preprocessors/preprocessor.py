@@ -1,11 +1,10 @@
 from traitlets.config import LoggingConfigurable
+from traitlets import Unicode
 
 class Preprocessor(LoggingConfigurable):
-
-    def preprocess(self, tasks, resources):
-        for task in tasks:
-            self.preprocess_task(task, resources)
-        return tasks, resources
-
-    def preprocess_task(self, task, resources):
-        return task, resources
+    
+    template_path = Unicode('templates')
+    task_path = Unicode('pools')
+    
+    def preprocess(self, resources):
+        raise NotImplementedError

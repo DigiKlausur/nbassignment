@@ -65,6 +65,21 @@ class ManageExercisesHandler(BaseHandler):
             windows=(sys.prefix == 'win32'))
         self.write(html)
 
+class ExerciseHandler(BaseHandler):
+
+    def initialize(self):
+        self._model = ExerciseModel()
+
+    def _remove(self, name, assignment):
+        self._model.remove(assignment, name)
+        self.redirect('/taskcreator/assignments/{}'.format(assignment))        
+
+    @web.authenticated
+    @check_xsrf
+    def get(self, action, name, assignment):
+        handler = getattr(self, '_{}'.format(action))
+        handler(name, assignment)
+
 class EditExercisesHandler(BaseHandler):
 
     def initialize(self):
@@ -206,6 +221,7 @@ default_handlers = [
     (r"/taskcreator/?", TaskcreatorHandler),
     (r"/taskcreator/assignments/?", ManageAssignmentsHandler),
     (r"/taskcreator/assignments/(?P<assignment>[^/]+)/?", ManageExercisesHandler),
+    (r"/taskcreator/assignments/(?P<assignment>[^/]+)/{}/(?P<name>[^/]+)/?".format(_navigation_regex), ExerciseHandler),
     (r"/taskcreator/assignments/(?P<assignment>[^/]+)/(?P<exercise>[^/]+)/?", EditExercisesHandler),
     (r"/taskcreator/pools/?", ManageTaskPoolsHandler),
     (r"/taskcreator/pools/{}/(?P<name>[^/]+)/?".format(_navigation_regex), TaskPoolHandler),

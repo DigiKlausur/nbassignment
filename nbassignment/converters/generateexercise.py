@@ -11,6 +11,7 @@ class GenerateExercise(Converter):
         FillTemplate,
         CopyFiles,
         GenerateTaskIDs,
+        AddTaskHeader,
         MakeExercise
     ])
 

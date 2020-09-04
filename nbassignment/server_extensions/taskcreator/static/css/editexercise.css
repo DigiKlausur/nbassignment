@@ -35,3 +35,7 @@ select[name=pool] {
   margin: auto;
   margin-top: .5em;
 }
+
+#exerciseoptionstable {
+  width: 30%;
+}

@@ -63,7 +63,7 @@ button:hover {
   border: 1px solid #bbb;
 }
 
-.e2xtable input {
+.e2xtable input[type=text] {
   height: 2.5em;
   width: 15em;
 }

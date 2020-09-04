@@ -3,9 +3,10 @@
 {% block head %}
 <link rel="stylesheet" href="{{ base_url }}/taskcreator/static/css/editexercise.css" type="text/css">
 <script type="module">    
-    import {addTaskSelector, generateExercise, templateOptions} from "{{ base_url }}/taskcreator/static/js/editexercise.js";
+    import {addTaskSelector, generateExercise, templateOptions, exerciseOptions} from "{{ base_url }}/taskcreator/static/js/editexercise.js";
     addTaskSelector({{ pools }});
     templateOptions();
+    exerciseOptions();
     generateExercise("{{ exercise }}", "{{ assignment }}");
 </script>
 {% endblock head %}
@@ -44,8 +45,11 @@
     <div id="task-select">
         <h3>2. Tasks</h3>
     </div>
+    <div id="exercise-options">
+        <h3>3. Exercise Options</h3>
+    </div>
     <div id="generate">
-        <h3>3. Generate Exercise</h3>
+        <h3>4. Generate Exercise</h3>
     </div>
 </div>
 

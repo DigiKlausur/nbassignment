@@ -29,6 +29,34 @@ function addOptionsTable(options) {
     $('#template-options').append(table);
 }
 
+export function exerciseOptions() {
+    let options = $('#exercise-options');
+    let table = $('<table/>')
+        .addClass('e2xtable')
+        .attr('id', 'exerciseoptionstable');
+    let head = $('<thead/>');
+    let header = $('<tr/>');
+    const columns = ['Option', 'Value'];
+    columns.forEach(function (column) {
+        header.append($('<th/>').text(column));
+    })
+    table.append(head.append(header));
+    let body = $('<tbody/>');
+
+    let row1 = $('<tr/>');
+    row1.append($('<td/>').text('Add Task Headers'))
+    row1.append($('<td/>').append($('<input/>')
+        .attr('type', 'checkbox')
+        .attr('id', 'task-headers')
+        .attr('checked', true)
+    ));
+    body.append(row1);
+    table.append(body);
+
+    options.append(table);
+
+}
+
 export function templateOptions() {
     let template = $('#template');
     if (template.length > 0) {
@@ -74,16 +102,23 @@ export function generateExercise(exercise, assignment) {
         $('#template-options input').each(function () {
             template_options[$(this).attr('id')] = $(this).val();
         });
+        let exercise_options = {};
+        $('#exercise-options input').each(function () {
+            if ($(this).attr('type') === 'checkbox') {
+                exercise_options[$(this).attr('id')] = $(this).prop('checked');
+            } else {
+                exercise_options[$(this).attr('id')] = $(this).val();
+            }
+        });
         console.log(template_options);
         let data = JSON.stringify({
             'template': template,
             'template_options': template_options,
             'tasks': tasks,
             'exercise': exercise,
-            'assignment': assignment
+            'assignment': assignment,
+            'exercise_options': exercise_options
         });
-        console.log(data);
-        alert('Template: ' + template + '\nTasks: ' + tasks);
         $.ajax({
             url: "/taskcreator/api/generate_exercise",
             type: "get",
@@ -93,7 +128,6 @@ export function generateExercise(exercise, assignment) {
             },
             success: function(response) {
                 window.open('/notebooks/source/' + assignment + '/' + exercise + '.ipynb', '_self');
-                //window.open('/taskcreator/assignments/' + assignment, '_self');
             },
             error: function(xhr) {
                 console.log('Oh no!')

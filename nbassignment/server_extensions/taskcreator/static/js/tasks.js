@@ -1,3 +1,4 @@
+import {EditableTable} from "./table.js";
 import Modal from "./modal.js";
 
 function addTask(pool) {
@@ -23,17 +24,13 @@ function addTask(pool) {
         },
         'Cancel': {}
     };
-
-    let title = 'Add Task';
-
-    new Modal(title, body, buttons).open();
+    new Modal('Add Task', body, buttons).open();
 }
 
-function deleteTask(name, pool) {
-
+function deleteTask(task, pool) {
     let body = $('<div/>');
-    body.append($('<span/>').text('Do you want to delete the task ' + name + '?'))
-    
+    let name = task.name;
+    body.append($('<span/>').text('Do you want to delete the task ' + name + '?'));    
 
     let buttons = {
         'Delete Task': {
@@ -44,44 +41,25 @@ function deleteTask(name, pool) {
         },
         'Cancel': {}
     };
-
-    let title = 'Delete Task';
-
-    new Modal(title, body, buttons).open();
-}
-
-function make_fa_button(cls, click) {
-    let btn = $('<div/>').click(click);
-    btn.append($('<i/>').addClass(cls));
-    return btn;
+    new Modal('Delete Task', body, buttons).open();
 }
 
 export default function addTaskTable(tasks, pool) {
-    let table = $('<table/>')
-        .addClass('e2xtable')
-        .attr('id', 'tasktable');
-    let head = $('<thead/>');
-    let header = $('<tr/>');
-    const columns = ['Name', '# of Questions', 'Points', 'Edit', 'Delete'];
-    columns.forEach(function (column) {
-        header.append($('<th/>').text(column));
-    })
-    table.append(head.append(header));
-    let body = $('<tbody/>');
-    tasks.forEach(function (task) {
-        let row = $('<tr/>');
-        row.append($('<td/>').text(task.name));
-        row.append($('<td/>').text(task.questions));
-        row.append($('<td/>').text(task.points));
-        row.append($('<td/>').append(
-            make_fa_button('fa fa-edit', () => window.open('/' + task.link, '_blank'))
-        ));
-        row.append($('<td/>').append(
-            make_fa_button('fa fa-trash-alt', () => deleteTask(task.name, pool))
-        ));
-        body.append(row);
-    });
-    table.append(body);
+    let table_data = {
+        "id": "tasktable",
+        "columns": [
+            ["Name", "name"],
+            ["# of Questions", "questions"],
+            ["Points", "points"],
+            ["Edit", "link"],
+            ["Delete", ""]
+        ],
+        "entries": tasks,
+        "deleteEntry": function (task) {
+            deleteTask(task, pool);
+        }
+    }
+    let table = new EditableTable(table_data).make_table();
 
     let add_task = $('<button/>')
         .addClass('e2xbutton')

@@ -1,10 +1,5 @@
+import {EditableTable} from "./table.js";
 import Modal from "./modal.js";
-
-function make_fa_button(cls, click) {
-    let btn = $('<div/>').click(click);
-    btn.append($('<i/>').addClass(cls));
-    return btn;
-}
 
 function addExercise(assignment) {
 
@@ -35,7 +30,8 @@ function addExercise(assignment) {
     new Modal(title, body, buttons).open();
 }
 
-function deleteExercise(name, assignment) {
+function deleteExercise(exercise, assignment) {
+    let name = exercise.name;
 
     let body = $('<div/>');
     body.append($('<span/>').text('Do you want to delete the exercise ' + name + '?'))    
@@ -56,26 +52,18 @@ function deleteExercise(name, assignment) {
 }
 
 export default function addExerciseTable(exercises, assignment) {
-    let table = $('<table/>')
-        .addClass('e2xtable')
-        .attr('id', 'exercisetable');
-    let head = $('<thead/>');
-    let header = $('<tr/>');
-    const columns = ['Name', 'Delete'];
-    columns.forEach(function (column) {
-        header.append($('<th/>').text(column));
-    })
-    table.append(head.append(header));
-    let body = $('<tbody/>');
-    exercises.forEach(function (exercise) {
-        let row = $('<tr/>');
-        row.append($('<td/>').append($('<a/>').attr('href', '/' + exercise.link).text(exercise.name)));
-        row.append($('<td/>').append(
-            make_fa_button('fa fa-trash-alt', () => deleteExercise(exercise.name, assignment))
-        ));
-        body.append(row);
-    });
-    table.append(body);
+    let table_data = {
+        "id": "exercisetable",
+        "columns": [
+            ["Name", "name"],
+            ["Delete", ""]
+        ],
+        "entries": exercises,
+        "deleteEntry": function (exercise) {
+            deleteExercise(exercise, assignment);
+        }
+    };
+    let table = new EditableTable(table_data).make_table();
 
     let add_exercise = $('<button/>')
         .addClass('e2xbutton')

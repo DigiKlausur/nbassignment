@@ -1,3 +1,4 @@
+import {EditableTable} from "./table.js";
 import Modal from "./modal.js";
 
 function addPool() {
@@ -51,38 +52,21 @@ function deletePool(name) {
     new Modal(title, body, buttons).open();
 }
 
-function make_fa_button(cls, click) {
-    let btn = $('<div/>').click(click);
-    btn.append($('<i/>').addClass(cls));
-    return btn;
-}
-
 export default function addTaskPoolTable(pools) {
-    let table = $('<table/>')
-        .addClass('e2xtable')
-        .attr('id', 'taskpooltable');
-    let head = $('<thead/>');
-    let header = $('<tr/>');
-    const columns = ['Name', '# of Tasks', 'Edit', 'Delete'];
-    columns.forEach(function (column) {
-        header.append($('<th/>').text(column));
-    })
-    table.append(head.append(header));
-    let body = $('<tbody/>');
-    pools.forEach(function (pool) {
-        let row = $('<tr/>');
-        //row.append($('<td/>').text(pool.name));
-        row.append($('<td/>').append($('<a/>').attr('href', '/' + pool.link).text(pool.name)));
-        row.append($('<td/>').text(pool.tasks));
-        row.append($('<td/>').append(
-            make_fa_button('fa fa-edit', () => window.open('/' + pool.link, '_blank'))
-        ));
-        row.append($('<td/>').append(
-            make_fa_button('fa fa-trash-alt', () => deletePool(pool.name))
-        ));
-        body.append(row);
-    });
-    table.append(body);
+    let table_data = {
+        "id": "taskpooltable",
+        "columns": [
+            ["Name", "name"],
+            ["# of Tasks", "tasks"],
+            ["Edit", "link"],
+            ["Delete", ""]
+        ],
+        "entries": pools,
+        "deleteEntry": function (pool) {
+            deletePool(pool.name);
+        }
+    }
+    let table = new EditableTable(table_data).make_table();
 
     let add_pool = $('<button/>')
         .addClass('e2xbutton')

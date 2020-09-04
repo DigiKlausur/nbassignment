@@ -1,3 +1,4 @@
+import {EditableTable} from "./table.js";
 import Modal from "./modal.js";
 
 function addTemplate() {
@@ -57,29 +58,19 @@ function make_fa_button(cls, click) {
 }
 
 export default function addTemplateTable(templates) {
-    let table = $('<table/>')
-        .addClass('e2xtable')
-        .attr('id', 'templatetable');
-    let head = $('<thead/>');
-    let header = $('<tr/>');
-    const columns = ['Name', 'Edit', 'Delete'];
-    columns.forEach(function (column) {
-        header.append($('<th/>').text(column));
-    })
-    table.append(head.append(header));
-    let body = $('<tbody/>');
-    templates.forEach(function (template) {
-        let row = $('<tr/>');
-        row.append($('<td/>').text(template.name));
-        row.append($('<td/>').append(
-            make_fa_button('fa fa-edit', () => window.open('/' + template.link, '_blank'))
-        ));
-        row.append($('<td/>').append(
-            make_fa_button('fa fa-trash-alt', () => deleteTemplate(template.name))
-        ));
-        body.append(row);
-    });
-    table.append(body);
+    let table_data = {
+        "id": "templatetable",
+        "columns": [
+            ["Name", "name"],
+            ["Edit", "link"],
+            ["Delete", ""]
+        ],
+        "entries": templates,
+        "deleteEntry": function (template) {
+            deleteTemplate(template.name);
+        }
+    }
+    let table = new EditableTable(table_data).make_table();
 
     let add_template = $('<button/>')
         .addClass('e2xbutton')

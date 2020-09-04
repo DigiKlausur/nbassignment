@@ -2,6 +2,9 @@ import os
 import nbformat
 from textwrap import dedent
 from .preprocessor import Preprocessor
+from ..utils import (
+    is_grade, is_solution, is_description,
+    get_task_info, get_valid_name, get_points)
 
 class AddTaskHeader(Preprocessor):
     
@@ -40,49 +43,42 @@ class AddTaskHeader(Preprocessor):
         **[{} Point(s)]**
         """.format(idx, sub_idx, points))
         return header
+
+    def add_headers(self, nb, idx):
+        total_points = sum([get_points(cell) for cell in nb.cells])
+        task = get_task_info(nb)
+
+        if len(task['subtasks']) < 1:
+            return nb
+        
+        new_cells = []
+        header = self.get_header(idx, total_points)
+        new_cells.append(header)
+        if 'header' in task:
+            new_cells.append(nb.cells[task['header']])
+            
+        if len(task['subtasks']) == 1:
+            new_cells.extend([nb.cells[i] for i in task['subtasks'][0]])
+            if 'other' in task:
+                new_cells.extend([nb.cells[i] for i in task['other']])
+            nb.cells = new_cells
+            return nb
+        
+        if len(task['subtasks']) > 1:    
+            for sub_idx, subtask in enumerate(task['subtasks']):
+                points = sum([get_points(nb.cells[i]) for i in subtask])
+                new_cells.append(self.get_sub_header(idx, sub_idx+1, points))
+                new_cells.extend([nb.cells[i] for i in subtask])
+                
+        if 'other' in task:
+                new_cells.extend([nb.cells[i] for i in task['other']])
+        nb.cells = new_cells
+        return nb
     
-    def is_description(self, cell):
-        return 'nbgrader' in cell.metadata and cell.metadata.nbgrader.grade_id.endswith('_Description0')
-    
-    def get_points(self, cell):
-        meta = cell.metadata
-        if 'nbgrader' in meta and 'points' in meta.nbgrader:
-            return meta.nbgrader.points
-        return 0
-    
-    def get_total_points(self, task_nb):
-        total = 0
-        for cell in task_nb.cells:
-            total += self.get_points(cell)
-        return total
-    
-    def add_sub_headers(self, task_id, task_nb):
-        splits = []
-        for idx, cell in enumerate(task_nb.cells):
-            if self.is_description(cell):
-                splits.append(idx)
-
-        splits.append(len(task_nb.cells))
-
-        task_positions = []
-
-        for i in range(len(splits) - 1):
-            points = 0
-            for cell in task_nb.cells[splits[i]:splits[i+1]]:
-                points += self.get_points(cell)
-            task_positions.append((splits[i], points))
-
-        sub_idx = 0
-        for task_position in task_positions:
-            header = self.get_sub_header(task_id, sub_idx + 1, task_position[1])
-            task_nb.cells = task_nb.cells[:task_position[0] + sub_idx] + \
-                            [header] + \
-                            task_nb.cells[sub_idx + task_position[0]:]
-            sub_idx += 1
-
-        return task_nb
     
     def preprocess(self, resources):
+        if not resources['exercise_options']['task-headers']:
+            return
         idx = 0
         for task in resources['tasks']:
             task_path = os.path.join(
@@ -96,7 +92,5 @@ class AddTaskHeader(Preprocessor):
                 idx += 1
                 task_nb = nbformat.read(os.path.join(task_path, nb_file),
                                         as_version=4)
-                header = self.get_header(idx, self.get_total_points(task_nb))
-                task_nb.cells = [header] + task_nb.cells
-                task_nb = self.add_sub_headers(idx, task_nb)
+                task_nb = self.add_headers(task_nb, idx)
                 nbformat.write(task_nb, os.path.join(task_path, nb_file))

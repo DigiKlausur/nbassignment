@@ -4,9 +4,30 @@ import os
 from tornado import web
 
 from .base import BaseApiHandler, check_xsrf, check_notebook_dir
-from ...models import TaskModel
+from ...models import TaskModel, PresetModel
 from ...converters import GenerateExercise
 from ...utils import NotebookVariableExtractor
+
+class ListTaskPresetsHandler(BaseApiHandler):
+
+    def initialize(self):
+        self.__model = PresetModel()
+
+    @web.authenticated
+    @check_xsrf
+    def get(self):
+        self.write(json.dumps(PresetModel().list_question_presets()))
+
+class PresetHandler(BaseApiHandler):
+
+    def initialize(self):
+        self.__model = PresetModel()
+
+    @web.authenticated
+    @check_xsrf
+    def get(self):
+        name = self.get_argument('name')
+        self.write(json.dumps(PresetModel().get_question_preset(name)))
 
 
 class StatusHandler(BaseApiHandler):
@@ -43,5 +64,7 @@ default_handlers = [
     (r"/taskcreator/api/status", StatusHandler),
     (r"/taskcreator/api/tasks", ListTasksHandler),
     (r"/taskcreator/api/generate_exercise", GenerateExerciseHandler),
-    (r"/taskcreator/api/templates/variables", TemplateVariableHandler)
+    (r"/taskcreator/api/templates/variables", TemplateVariableHandler),
+    (r"/taskcreator/api/presets/list", ListTaskPresetsHandler),
+    (r"/taskcreator/api/presets/get", PresetHandler),
 ]

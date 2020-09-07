@@ -2,33 +2,20 @@ define([
     'require',
     'jquery',
     'base/js/namespace',
-    './dialogs/dialogs'
-], function (require, $, Jupyter, dialogs) {
+    'base/js/utils',
+    './dialogs/dialogs',
+    './questionmanager'
+], function (require, $, Jupyter, utils, dialogs, questionmanager) {
 
     'use strict';
 
     function question_menu() {
-        var open_menu = $('<span/>').attr('id', 'insert-question').append($('<a/>').append('Add Question'));
+        let open_menu = $('<span/>').attr('id', 'insert-question').append($('<a/>').append('Add Question'));
         open_menu.addClass('e2xbutton e2xsubmenu');
-        var menu = $('<ul/>').addClass('question_menu');
-        var options = [
-            ['Freetext', 'text'],
-            ['Single Choice', 'single_choice'],
-            ['Multiple Choice', 'multiple_choice'],
-            ['Code (Manual)', 'manual_code'],
-            ['Code (Autograded)', 'autograded_code'],
-        ]
-
-        options.forEach(function (option) {
-            var li = $('<li/>').addClass('question_item');
-            li.append($('<a/>').append(option[0]));
-            li.click(function () {
-                dialogs.insert_task(option[0], option[1]);
-            })
-            menu.append(li);
-        })
-
+        let menu = $('<ul/>').addClass('question_menu');
         open_menu.append(menu);
+
+        new questionmanager.QuestionManager();
         return open_menu;
     }
 

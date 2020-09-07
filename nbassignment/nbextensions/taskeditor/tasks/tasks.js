@@ -131,7 +131,9 @@ define([
                     },
                     "nbgrader": nbgrader_metadata('manual', name, points)
                 },
-                "text": "# Answer\n\n# Please write your code answer here!",
+                "text": "# Answer\n\n# Please write your code answer here!" + 
+                        "\n\n### BEGIN SOLUTION" + 
+                        "\n\n### END SOLUTION",
                 "type": "code"
             }
         ];
@@ -160,7 +162,9 @@ define([
                     },
                     "nbgrader": nbgrader_metadata('test', name, points)
                 },
-                "text": "# Test\n\n# Please write your code test here!",
+                "text": "# Test\n\n# Please write your code test here!" + 
+                        "\n\n### BEGIN HIDDEN TESTS" + 
+                        "\n\n### END HIDDEN TESTS",
                 "type": "code"
             }
         ];

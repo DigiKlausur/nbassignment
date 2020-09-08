@@ -4,10 +4,36 @@ import os
 from tornado import web
 
 from .base import BaseApiHandler, check_xsrf, check_notebook_dir
-from ...models import TaskModel
+from ...models import TaskModel, PresetModel
 from ...converters import GenerateExercise
 from ...utils import NotebookVariableExtractor
 
+class PresetHandler(BaseApiHandler):
+
+    def initialize(self):
+        self.__model = PresetModel()
+
+    def _list_template(self):
+        self.write(json.dumps(self.__model.list_template_presets()))
+
+    def _get_template(self):
+        name = self.get_argument('name')
+        self.write(json.dumps(self.__model.get_template_preset(name)))
+
+    def _list_question(self):
+        self.write(json.dumps(self.__model.list_question_presets()))
+
+    def _get_question(self):
+        name = self.get_argument('name')
+        self.write(json.dumps(self.__model.get_question_preset(name)))
+
+    @web.authenticated
+    @check_xsrf
+    def get(self):
+        action = self.get_argument('action')
+        preset_type = self.get_argument('type')
+        handler = getattr(self, '_{}_{}'.format(action, preset_type))
+        handler()
 
 class StatusHandler(BaseApiHandler):
     @web.authenticated
@@ -43,5 +69,6 @@ default_handlers = [
     (r"/taskcreator/api/status", StatusHandler),
     (r"/taskcreator/api/tasks", ListTasksHandler),
     (r"/taskcreator/api/generate_exercise", GenerateExerciseHandler),
-    (r"/taskcreator/api/templates/variables", TemplateVariableHandler)
+    (r"/taskcreator/api/templates/variables", TemplateVariableHandler),
+    (r"/taskcreator/api/presets", PresetHandler)
 ]

@@ -21,6 +21,10 @@ for (dirname, dirnames, filenames) in os.walk("nbassignment/server_extensions/ta
     root = os.path.relpath(dirname, "nbassignment/server_extensions/taskcreator")
     for filename in filenames:
         static_files.append(os.path.join(root, filename))
+for (dirname, dirnames, filenames) in os.walk("nbassignment/server_extensions/taskcreator/presets"):
+    root = os.path.relpath(dirname, "nbassignment/server_extensions/taskcreator")
+    for filename in filenames:
+        static_files.append(os.path.join(root, filename))
 
 name = u'nbassignment'
 

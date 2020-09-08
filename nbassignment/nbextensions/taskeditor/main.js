@@ -4,8 +4,8 @@ define([
     'base/js/namespace',
     'base/js/utils',
     './dialogs/dialogs',
-    './questionmanager'
-], function (require, $, Jupyter, utils, dialogs, questionmanager) {
+    './manager'
+], function (require, $, Jupyter, utils, dialogs, manager) {
 
     'use strict';
 
@@ -15,32 +15,17 @@ define([
         let menu = $('<ul/>').addClass('question_menu');
         open_menu.append(menu);
 
-        new questionmanager.QuestionManager();
+        new manager.QuestionManager();
         return open_menu;
     }
 
     function template_menu() {
-        var open_menu = $('<span/>').attr('id', 'insert-template-cell').append($('<a/>').append('Add Cell'));
+        let open_menu = $('<span/>').attr('id', 'insert-template-cell').append($('<a/>').append('Add Cell'));
         open_menu.addClass('e2xbutton e2xsubmenu');
-        var menu = $('<ul/>').addClass('question_menu');
-        var options = [
-            ['Header', 'header'],
-            ['Footer', 'footer'],
-            ['Student Info', 'student_info'],
-            ['Group Info', 'group_info']
-        ]
-
-        options.forEach(function (option) {
-            var li = $('<li/>').addClass('question_item');
-            li.append($('<a/>').append(option[0]));
-            li.click(function () {
-                dialogs.insert_template_cell(option[0], option[1]);
-                //tasks.insert_task(option[1]);
-            })
-            menu.append(li);
-        })
-
+        let menu = $('<ul/>').addClass('question_menu');
         open_menu.append(menu);
+
+        new manager.TemplateManager();
         return open_menu;
     }
 
@@ -86,38 +71,6 @@ define([
         document.getElementsByTagName("head")[0].appendChild(link);
     }
 
-    function add_toolbar() {
-        var div = $('<div/>').attr('id', 'questionbar');
-        div.append($('<span/>').text('e²x').addClass('questionbutton'));
-
-        div.append($('#save-notbook'));
-
-        var items = [];
-        if (is_taskbook()) {
-            items.push(question_menu());
-            items.push(file_menu());
-            items.push(tag_menu());
-            items.push($('#nbgrader-total-points-group'));
-            items.push($('#move_up_down'));
-            items.push($('#run_int'));
-            $('#nbgrader-total-points-group').show();
-        } else if (is_templatebook()) {
-            items.push(template_menu());
-            items.push(file_menu());
-            items.push(tag_menu());
-            items.push($('#nbgrader-total-points-group'));
-            items.push($('#move_up_down'));
-            items.push($('#run_int'));
-            $('#nbgrader-total-points-group').hide();
-        }
-
-        items.forEach(function (item) {
-            div.append(item);
-        });
-        
-        div.insertAfter($('#maintoolbar-container'));
-    }
-
     function is_taskbook() {
         var metadata = Jupyter.notebook.metadata;
         return (metadata.hasOwnProperty('nbassignment')) 
@@ -133,47 +86,56 @@ define([
     }
 
     function init() {
-        if (is_taskbook()) {
-            Jupyter.CellToolbar.activate_preset('Create Assignment');
-            Jupyter.CellToolbar.global_show();
-            load_css('question.css');
-            add_toolbar();
-            $('#maintoolbar-container').hide();
-            var menus = [];//['insert_menu', 'file_menu'];
-            menus.forEach(function (menu) {
-                $('#' + menu).parent().hide();
-            });
+        let preset, name;
+        let items = [];
 
-            var div = $('<div/>').attr('id', 'e2xheader');
-            div.append($('<span/>').text('Task'));
-            div.insertAfter($('#ipython_notebook'));            
-        } else if (is_templatebook()) {
-            Jupyter.CellToolbar.activate_preset('Create Template');
-            Jupyter.CellToolbar.global_show();
-            load_css('question.css');
-            add_toolbar();
-            $('#maintoolbar-container').hide();
-            var menus = [];//['insert_menu', 'file_menu'];
-            menus.forEach(function (menu) {
-                $('#' + menu).parent().hide();
-            });
-
-            var div = $('<div/>').attr('id', 'e2xheader');
-            div.append($('<span/>').text('Template'));
-            div.insertAfter($('#ipython_notebook'));   
+        if (!is_taskbook() && !is_templatebook()) {
+            return;
+        } else if (is_taskbook()) {
+            preset = 'Create Assignment';
+            name = 'Task';
+            items.push(question_menu());
+            $('#nbgrader-total-points-group').show();
+        } else {
+            preset = 'Create Template';
+            name = 'Template';
+            items.push(template_menu());
+            $('#nbgrader-total-points-group').hide();
         }
+        items.push(file_menu());
+        items.push(tag_menu());
+        items.push($('#nbgrader-total-points-group'));
+        items.push($('#move_up_down'));
+        items.push($('#run_int')); 
+
+        Jupyter.CellToolbar.activate_preset(preset);
+        Jupyter.CellToolbar.global_show();
+        load_css('taskeditor.css');
+
+        $('#maintoolbar-container').hide();
+        $('<div/>')
+            .attr('id', 'e2xheader')
+            .append($('<span/>').text(name))
+            .insertAfter($('#ipython_notebook'));               
+        
+        var div = $('<div/>').attr('id', 'questionbar');
+        div.append($('<span/>').text('e²x').addClass('questionbutton'));
+
+        div.append($('#save-notbook'));
+        items.forEach(function (item) {
+            div.append(item);
+        });
+        div.insertAfter($('#maintoolbar-container'));
     }
 
     function load_extension() {
-        console.log(Jupyter.notebook);
         if (Jupyter.notebook) {
             init();
         } else {
             events.on('notebook_loaded.notebook', function () {
-                init2();
+                init();
             })
         }
-
     }
 
     return {

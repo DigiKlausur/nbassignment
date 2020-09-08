@@ -24,6 +24,20 @@ define([
         is_description(cell) {
             return this.is_locked(cell) && !this.is_grade(cell);
         }
+
+        to_description(cell, id) {
+            if (this.is_nbgrader(cell)) {
+                delete cell.metadata.nbgrader;
+            }
+            cell.metadata.nbgrader = {
+                locked: true,
+                grade: false,
+                solution: false,
+                task: false,
+                grade_id: id,
+                schema_version: 3
+            }
+        }
         
         is_test(cell) {
             return this.is_locked(cell) && this.is_grade(cell);

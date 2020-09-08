@@ -8,27 +8,32 @@ from ...models import TaskModel, PresetModel
 from ...converters import GenerateExercise
 from ...utils import NotebookVariableExtractor
 
-class ListTaskPresetsHandler(BaseApiHandler):
-
-    def initialize(self):
-        self.__model = PresetModel()
-
-    @web.authenticated
-    @check_xsrf
-    def get(self):
-        self.write(json.dumps(PresetModel().list_question_presets()))
-
 class PresetHandler(BaseApiHandler):
 
     def initialize(self):
         self.__model = PresetModel()
 
+    def _list_template(self):
+        self.write(json.dumps(self.__model.list_template_presets()))
+
+    def _get_template(self):
+        name = self.get_argument('name')
+        self.write(json.dumps(self.__model.get_template_preset(name)))
+
+    def _list_question(self):
+        self.write(json.dumps(self.__model.list_question_presets()))
+
+    def _get_question(self):
+        name = self.get_argument('name')
+        self.write(json.dumps(self.__model.get_question_preset(name)))
+
     @web.authenticated
     @check_xsrf
     def get(self):
-        name = self.get_argument('name')
-        self.write(json.dumps(PresetModel().get_question_preset(name)))
-
+        action = self.get_argument('action')
+        preset_type = self.get_argument('type')
+        handler = getattr(self, '_{}_{}'.format(action, preset_type))
+        handler()
 
 class StatusHandler(BaseApiHandler):
     @web.authenticated
@@ -65,6 +70,5 @@ default_handlers = [
     (r"/taskcreator/api/tasks", ListTasksHandler),
     (r"/taskcreator/api/generate_exercise", GenerateExerciseHandler),
     (r"/taskcreator/api/templates/variables", TemplateVariableHandler),
-    (r"/taskcreator/api/presets/list", ListTaskPresetsHandler),
-    (r"/taskcreator/api/presets/get", PresetHandler),
+    (r"/taskcreator/api/presets", PresetHandler)
 ]

@@ -1,8 +1,9 @@
 import os
 import glob
 import shutil
+from .basemodel import BaseModel
 
-class ExerciseModel:
+class ExerciseModel(BaseModel):
 
     def remove(self, assignment, name):
         base_path = os.path.join('source', assignment)

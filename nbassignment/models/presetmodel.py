@@ -2,8 +2,9 @@ from traitlets.config import LoggingConfigurable
 from traitlets import Unicode
 import os
 import nbformat
+from .basemodel import BaseModel
 
-class PresetModel(LoggingConfigurable):
+class PresetModel(BaseModel):
     
     task_preset_path = Unicode(
         os.path.join(
@@ -29,7 +30,7 @@ class PresetModel(LoggingConfigurable):
             if os.path.isfile(os.path.join(preset_path, item)) and \
                item.endswith('.ipynb'):
                 presets.append(os.path.splitext(item)[0])
-        return presets
+        return sorted(presets)
 
     def get_preset(self, preset_path, preset_name):
         path = os.path.join(preset_path, '{}.ipynb'.format(preset_name))

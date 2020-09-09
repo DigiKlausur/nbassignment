@@ -2,8 +2,9 @@ import os
 import nbformat
 import shutil
 from textwrap import dedent
+from .basemodel import BaseModel
 
-class TaskModel:
+class TaskModel(BaseModel):
 
     def new_taskbook(self, name):
         nb = nbformat.v4.new_notebook()

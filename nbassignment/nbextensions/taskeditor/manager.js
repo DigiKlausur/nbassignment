@@ -142,7 +142,7 @@ define([
                     $('<input/>')
                         .attr('type', 'number')
                         .attr('id', 'points')
-                        .attr('min', '0')
+                        .attr('min', 0)
                         .val(0)));
 
             let body = $('<div/>').append(table
@@ -158,7 +158,7 @@ define([
                         click: () => that.insert_preset(
                             preset, 
                             {'name': $('#taskname').val(),
-                             'points': $('#points').val()}
+                             Number('points': $('#points').val())}
                         )
                     },
                     Cancel: {}

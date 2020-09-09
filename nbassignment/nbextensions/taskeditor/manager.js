@@ -97,16 +97,17 @@ define([
             let tests = 0;
             
             cells.forEach(function (cell) {
+                if (model.is_grade(cell)) {
+                    model.set_points(cell, points);
+                }
                 if (model.is_description(cell)) {
                     model.set_id(cell, taskname + '_description' + descriptions);
                     descriptions += 1;
                 } else if (model.is_test(cell)) {
                     model.set_id(cell, 'test' + tests + '_' + taskname);
-                    model.set_points(cell, points);
                     tests += 1;
                 } else if (model.is_solution(cell)) {
                     model.set_id(cell, taskname);
-                    model.set_points(cell, points);
                 }
             });
         }

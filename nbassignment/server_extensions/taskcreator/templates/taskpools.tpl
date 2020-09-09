@@ -16,5 +16,10 @@
 
 {% block body %}
 <h1>Task Pools</h1>
+<div class='breadcrumbs'>
+<ul>
+    <li>Taskpools</li>
+</ul>
+</div>
 
 {% endblock body %}

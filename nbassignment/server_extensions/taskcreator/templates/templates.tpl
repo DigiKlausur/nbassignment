@@ -16,6 +16,11 @@
 
 {% block body %}
 <h1>Templates</h1>
+<div class='breadcrumbs'>
+<ul>
+    <li>Templates</li>
+</ul>
+</div>
 
 {% endblock body %}
 

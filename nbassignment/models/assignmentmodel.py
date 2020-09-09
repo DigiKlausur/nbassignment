@@ -1,8 +1,9 @@
 import os
 import glob
+from .basemodel import BaseModel
 
 
-class AssignmentModel:
+class AssignmentModel(BaseModel):
 
     def __get_assignment_info(self, assignment):
         return len(glob.glob(os.path.join('source', assignment, '*.ipynb')))

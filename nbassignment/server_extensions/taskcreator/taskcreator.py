@@ -10,11 +10,13 @@ from notebook.utils import url_path_join as ujoin
 from . import handlers, apihandlers
 from nbgrader.apps.baseapp import NbGrader
 
+from ...config import ConfigManager
 
 class TaskcreatorExtension(NbGrader):
 
     name = u'taskcreator'
     description = u'Create a jupyter notebook assignment'
+    config_file_name = ConfigManager.config_name
 
     @default("classes")
     def _classes_default(self):

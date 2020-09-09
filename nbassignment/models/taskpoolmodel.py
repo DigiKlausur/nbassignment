@@ -1,8 +1,9 @@
 import os
 import nbformat
 import shutil
+from .basemodel import BaseModel
 
-class TaskPoolModel:
+class TaskPoolModel(BaseModel):
 
     def new(self, name):
         path = os.path.join('pools', name)

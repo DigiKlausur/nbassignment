@@ -1,8 +1,9 @@
 import os
 import nbformat
 import shutil
+from .basemodel import BaseModel
 
-class TemplateModel:
+class TemplateModel(BaseModel):
 
     def __init__(self):
         os.makedirs('templates', exist_ok=True)

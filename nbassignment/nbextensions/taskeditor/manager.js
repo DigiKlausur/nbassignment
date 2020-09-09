@@ -158,7 +158,7 @@ define([
                         click: () => that.insert_preset(
                             preset, 
                             {'name': $('#taskname').val(),
-                             'points': $('#points').val()}
+                             'points': Number($('#points').val())}
                         )
                     },
                     Cancel: {}

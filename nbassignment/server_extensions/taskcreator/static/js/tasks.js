@@ -59,7 +59,7 @@ export default function addTaskTable(tasks, pool) {
             deleteTask(task, pool);
         }
     }
-    let table = new EditableTable(table_data).make_table();
+    let table = new EditableTable(table_data, '_blank').make_table();
 
     let add_task = $('<button/>')
         .addClass('e2xbutton')

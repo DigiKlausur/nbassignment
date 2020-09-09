@@ -1,7 +1,8 @@
 export class Table {
 
-    constructor(data) {
+    constructor(data, target='_self') {
         this.data = data;
+        this.target = target;
     }
 
     make_header(table) {
@@ -24,7 +25,10 @@ export class Table {
             let row = $('<tr/>');
             that.data.columns.forEach(function (column) {
                 if (column[0] === "Name" && entry.hasOwnProperty('link')) {
-                    row.append($('<td/>').append($('<a/>').attr('href', '/' + entry.link).text(entry[column[1]])));
+                    row.append($('<td/>').append($('<a/>')
+                        .attr('href', '/' + entry.link)
+                        .attr('target', that.target)
+                        .text(entry[column[1]])));
                 } else {
                     row.append($('<td/>').text(entry[column[1]]));
                 }
@@ -64,6 +68,7 @@ export class EditableTable extends Table {
                 if (column[0] === "Name" && entry.hasOwnProperty('link')) {
                     cell.append($('<a/>')
                         .attr('href', '/' + entry.link)
+                        .attr('target', that.target)
                         .text(entry[column[1]]));
                 } else if (column[0] === 'Edit') {
                     cell.append(

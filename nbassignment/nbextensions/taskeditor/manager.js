@@ -178,8 +178,10 @@ define([
             const model = new nbmodel.NbgraderModel();
             let counter = 0;
             cells.forEach(function (cell) {
-                model.to_description(cell, '${name}_${counter}');
-                counter += 1;
+                if (model.is_nbgrader(cell)) {
+                    model.set_id(name + '_' + counter);
+                    counter += 1;
+                }                
             });
         }
 

@@ -11,7 +11,7 @@ define(function(require) {
                 $('<a>')
                 .attr('href', base_url + 'taskcreator')
                 .attr('target', '_blank')
-                .text('Manage Tasks')
+                .text('Manage Exercises')
             )
         );
     }

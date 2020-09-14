@@ -6,7 +6,8 @@ define([
     class NbgraderModel {
         
         is_nbgrader(cell) {
-            return cell.metadata.hasOwnProperty('nbgrader');
+            return cell.hasOwnProperty('metadata') && 
+                   cell.metadata.hasOwnProperty('nbgrader');
         }
         
         is_locked(cell) {

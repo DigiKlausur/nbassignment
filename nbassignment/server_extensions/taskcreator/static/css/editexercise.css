@@ -36,6 +36,6 @@ select[name=pool] {
   margin-top: .5em;
 }
 
-#exerciseoptionstable {
-  width: 30%;
+.e2xtable {
+  min-width: 40%;
 }

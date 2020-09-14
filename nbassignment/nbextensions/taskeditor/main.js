@@ -149,6 +149,10 @@ define([
         var div = $('<div/>').attr('id', 'questionbar');
         div.append($('<span/>').text('e²x').addClass('questionbutton'));
 
+        if (is_taskbook()) {
+            div.append($('#nbgrader-total-points-group'));
+        }
+
         div.append($('#save-notbook'));
         items.forEach(function (item) {
             div.append(item);

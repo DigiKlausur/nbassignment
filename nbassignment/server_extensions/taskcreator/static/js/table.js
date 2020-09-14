@@ -21,6 +21,12 @@ export class Table {
     make_body(table) {
         let that = this;
         let body = $('<tbody/>');
+        if (that.data.entries.length < 1) {
+            body.append($('<tr/>').append($('<td/>')
+                .attr('colspan', that.data.columns.length)
+                .css('text-align', 'center')
+                .text('No data available in table')));
+        }
         that.data.entries.forEach(function (entry) {
             let row = $('<tr/>');
             that.data.columns.forEach(function (column) {
@@ -60,6 +66,12 @@ export class EditableTable extends Table {
     make_body(table) {
         let that = this;
         let body = $('<tbody/>');
+        if (that.data.entries.length < 1) {
+            body.append($('<tr/>').append($('<td/>')
+                .attr('colspan', that.data.columns.length)
+                .css('text-align', 'center')
+                .text('No data available in table')));
+        }
         that.data.entries.forEach(function (entry) {
             let row = $('<tr/>');
             

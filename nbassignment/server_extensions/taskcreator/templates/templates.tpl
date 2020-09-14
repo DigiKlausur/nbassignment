@@ -18,8 +18,15 @@
 <h1>Templates</h1>
 <div class='breadcrumbs'>
 <ul>
-    <li>Templates</li>
+    <li><a href="{{ base_url }}/taskcreator/templates">Templates</a></li>
 </ul>
+</div>
+
+<div class='help'>
+<h3>Create templates</h3>
+<p>Templates are used for creating exercises. A template consists of header and footer cells and special cells like student info.
+You can use variables in templates by enclosing them in double curly braces <span style="white-space:nowrap">(e.g. <strong>&#123;&#123; my_var &#125;&#125;</strong>).</span> 
+When creating an exercise you can set the values for those variables.</p>
 </div>
 
 {% endblock body %}

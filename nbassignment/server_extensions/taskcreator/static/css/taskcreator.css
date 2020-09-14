@@ -118,6 +118,10 @@ button:hover {
   padding: 1em;
 }
 
+.modal-button {
+  margin-right: 1em;
+}
+
 .breadcrumbs li {
   display: inline-block;
 }

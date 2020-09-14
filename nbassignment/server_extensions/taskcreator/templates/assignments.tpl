@@ -25,7 +25,7 @@
 
 <div class='help'>
 <h3>Choose your assignment</h3>
-<p>Here you can choose which assignment you want to create an exercise for. An exercise is a single Jupyter Notebook consisting of tasks. Assignments have to be created via <a href="{{ base_url }}/formgrader/">nbgrader</a>.</p>
+<p>Here you can choose which assignment you want to create an exercise for. An exercise is a single Jupyter Notebook consisting of tasks. Assignments have to be created via <a href="{{ base_url }}/formgrader/" target="_blank">nbgrader</a>.</p>
 </div>
 
 

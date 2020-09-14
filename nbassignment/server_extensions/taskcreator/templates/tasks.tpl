@@ -19,7 +19,7 @@
 <h1>Tasks</h1>
 <div class='breadcrumbs'>
 <ul>
-    <li><a href="{{ base_url }}/taskcreator/pools">Taskpools</a></li>
+    <li><a href="{{ base_url }}/taskcreator/pools">Task Pools</a></li>
     <li> > {{ pool }}</li>
 </ul>
 </div>

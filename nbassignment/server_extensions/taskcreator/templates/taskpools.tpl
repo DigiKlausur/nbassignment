@@ -18,8 +18,13 @@
 <h1>Task Pools</h1>
 <div class='breadcrumbs'>
 <ul>
-    <li>Taskpools</li>
+    <li><a href="{{ base_url }}/taskcreator/pools">Task Pools</a></li>
 </ul>
+</div>
+
+<div class='help'>
+<h3>Manage task pools</h3>
+<p>Task pools are collections of tasks about the same topic. A task consists of a collection of questions.</p>
 </div>
 
 {% endblock body %}

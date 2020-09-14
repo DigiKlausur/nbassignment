@@ -70,7 +70,7 @@ export default function addTemplateTable(templates) {
             deleteTemplate(template.name);
         }
     }
-    let table = new EditableTable(table_data).make_table();
+    let table = new EditableTable(table_data, '_blank').make_table();
 
     let add_template = $('<button/>')
         .addClass('e2xbutton')

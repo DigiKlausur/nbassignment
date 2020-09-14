@@ -85,6 +85,33 @@ define([
             && (metadata.nbassignment.type === 'template');
     }
 
+    function replace_run_button() {
+        let btn = $('<button/>')
+            .addClass('btn btn-default')
+            .append($('<i/>').addClass('fa fa-play'))
+            .append($('<span/>').addClass('toolbar-btn-label').text('Run'))
+            .attr('title', 'run selected cell(s)')
+            .click(() => Jupyter.notebook.execute_cell());
+
+        $('#run_int > button').first().replaceWith(btn);;
+    }
+
+    function remap_key_bindings() {
+        let shortcuts = ['alt-enter', 'shift-enter'];
+
+        shortcuts.forEach(function (shortcut) {
+            Jupyter.keyboard_manager.command_shortcuts.remove_shortcut(shortcut);
+            Jupyter.keyboard_manager.edit_shortcuts.add_shortcut(shortcut, {
+                help : 'run cell',
+                help_index : 'zz',
+                handler : function (event) {
+                    IPython.notebook.execute_cell();
+                    return false;
+                }}
+            )
+        });
+    }
+
     function init() {
         let preset, name;
         let items = [];
@@ -102,6 +129,7 @@ define([
             items.push(template_menu());
             $('#nbgrader-total-points-group').hide();
         }
+
         items.push(file_menu());
         items.push(tag_menu());
         items.push($('#nbgrader-total-points-group'));
@@ -126,6 +154,8 @@ define([
             div.append(item);
         });
         div.insertAfter($('#maintoolbar-container'));
+        remap_key_bindings();
+        replace_run_button();
     }
 
     function load_extension() {

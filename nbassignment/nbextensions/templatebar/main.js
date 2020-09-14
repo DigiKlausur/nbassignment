@@ -32,11 +32,11 @@ define([
         link.href = require.toUrl('./' + file);
         document.getElementsByTagName("head")[0].appendChild(link);
     }
-    
+
     function display_type(div, cell, celltoolbar) {
     	if (cell.cell_type === null) {
     		setTimeout(function () {
-                create_role_select(div, cell, celltoolbar);
+                display_type(div, cell, celltoolbar);
             }, 100);
     	} else {
     		let title = model.get_role(cell);

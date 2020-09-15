@@ -179,14 +179,14 @@ define([
             let counter = 0;
             cells.forEach(function (cell) {
                 if (model.is_nbgrader(cell)) {
-                    model.set_id(name + '_' + counter);
+                    model.set_id(cell, name + '_' + counter);
                     counter += 1;
                 }                
             });
         }
 
         handle_insert_preset(cells, preset_data) {
-            let idx = Jupyter.notebook.ncells();
+            let idx = Jupyter.notebook.get_selected_index() + 1;
             this.generate_template_ids(cells, preset_data.name);
             cells.forEach(function (taskcell) {
                 let cell = Jupyter.notebook.insert_cell_at_index(taskcell.cell_type, idx);
@@ -196,36 +196,11 @@ define([
                 }
                 idx += 1;
             });
+            Jupyter.notebook.select(idx - 1);
         }
 
         insert_dialog(preset) {
-            let that = this;            
-            let table = $('<table/>').addClass('e2xtable');
-
-            let nameRow = $('<tr/>')
-                .append($('<td/>').append($('<span/>').text('Name:')))
-                .append($('<td/>').addClass('column2').append(
-                    $('<input/>')
-                        .attr('type', 'text')
-                        .attr('id', 'templatename')
-                        .val('template_' + this.randomString(6))));
-
-            let body = $('<div/>').append(table
-                .append(nameRow));
-
-            dialog.modal({
-                keyboard_manager: Jupyter.keyboard_manager,
-                title: 'Insert Template - ' + preset,
-                body: body,
-                buttons: {
-                    OK: {
-                        click: () => that.insert_preset(
-                            preset, 
-                            {'name': $('#templatename').val()}
-                        )
-                    },
-                    Cancel: {}
-                }});
+            this.insert_preset(preset, {'name': 'template_' + this.randomString(8)});
         }
     }
 

@@ -88,26 +88,44 @@ define([
 
         constructor() {
             super('question');
+            this.model = new nbmodel.NbgraderModel();
+        }
+
+        get_task_name() {
+            let that = this;
+            let ids = new Set();
+            let nb_name = Jupyter.notebook.notebook_name.split('.ipynb')[0];
+            Jupyter.notebook.get_cells().forEach(function (cell) {
+                if (that.model.is_nbgrader(cell)) {
+                    ids.add(that.model.get_id(cell));
+                }                
+            });
+            let char = 65;
+            let task_name = nb_name + '_' + String.fromCharCode(char);
+            while (ids.has(task_name)) {
+                char += 1;
+                task_name = nb_name + '_' + String.fromCharCode(char);
+            }
+            return task_name;
         }
 
         generate_task_ids(cells, taskname, points) {
-            const model = new nbmodel.NbgraderModel();
-            
+            let that = this;
             let descriptions = 0;
             let tests = 0;
             
             cells.forEach(function (cell) {
-                if (model.is_grade(cell)) {
-                    model.set_points(cell, points);
+                if (that.model.is_grade(cell)) {
+                    that.model.set_points(cell, points);
                 }
-                if (model.is_description(cell)) {
-                    model.set_id(cell, taskname + '_description' + descriptions);
+                if (that.model.is_description(cell)) {
+                    that.model.set_id(cell, taskname + '_description' + descriptions);
                     descriptions += 1;
-                } else if (model.is_test(cell)) {
-                    model.set_id(cell, 'test' + tests + '_' + taskname);
+                } else if (that.model.is_test(cell)) {
+                    that.model.set_id(cell, 'test' + tests + '_' + taskname);
                     tests += 1;
-                } else if (model.is_solution(cell)) {
-                    model.set_id(cell, taskname);
+                } else if (that.model.is_solution(cell)) {
+                    that.model.set_id(cell, taskname);
                 }
             });
         }
@@ -135,7 +153,7 @@ define([
                     $('<input/>')
                         .attr('type', 'text')
                         .attr('id', 'taskname')
-                        .val('task_' + this.randomString(6))));
+                        .val(this.get_task_name())));
 
             let pointRow = $('<tr/>')
                 .append($('<td/>').append($('<span/>').text('Points:')))

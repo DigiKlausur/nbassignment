@@ -49,6 +49,13 @@ define([
                 cell.metadata.nbgrader.grade_id = id;
             }
         }
+
+        get_id(cell) {
+            if (this.is_nbgrader(cell)) {
+                return cell.metadata.nbgrader.grade_id;
+            }
+            return '';
+        }
         
         set_points(cell, points) {
             if (this.is_nbgrader(cell)) {

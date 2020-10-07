@@ -1,5 +1,4 @@
 import {Table} from "./table.js";
-import Modal from "./modal.js";
 
 export default function addAssignmentTable(assignments) {
     let table_data = {

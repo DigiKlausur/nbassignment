@@ -11,13 +11,20 @@ body {
 }
 
 button {
-  background-color: #eaf4f7;
-  border: 1px solid #dae4e7;
+  color: #fff;
+  background-color: #2980b9;
+  border: none;
+  border-radius: .3em;
+  box-shadow: 0px .2em .2px #3896d3;
   padding: .5em 1em .5em 1em;
 }
 
 button:hover {
-  background-color: #d2dbde;
+  color: #fff;
+  background-color: #51aae6;
+  border: none;
+  border-radius: .3em;
+  box-shadow: 0px .2em 0px #76bceb;
 }
 
 #create_question {
@@ -44,18 +51,19 @@ button:hover {
 .e2xtable td {
   text-align: center;
   padding: .5em;
+  border: 1px solid #ddd;  
 }
 
 .e2xtable > thead th {
   background-color: #d2dbde;
 }
 
-.e2xtable tr:nth-child(odd) {
-  background-color: #f8fbfc;
+.e2xtable tr:nth-child(even) {
+  background-color: white;
 }
 
-.e2xtable tr:nth-child(even) {
-  background-color: #eaf4f7;
+.e2xtable tr:nth-child(odd) {
+  background-color: #f2f2f2;
 }
 
 .e2xtable .column2 {
@@ -165,26 +173,8 @@ th {
   line-height: 2em;
 }
 
-
-
 svg {
   color: #23527c;
-}
-
-th {
-  line-height: 2em;
-}
-
-.e2xtable td {
-  border: 1px solid #ddd;  
-}
-
-.e2xtable tr:nth-child(even) {
-  background-color: white;
-}
-
-.e2xtable tr:nth-child(odd) {
-  background-color: #f2f2f2;
 }
 
 .e2xtable thead th {
@@ -192,21 +182,7 @@ th {
   color: white;
 }
 
-button {
-  color: #fff;
-  background-color: #2980b9;
-  border: none;
-  border-radius: .3em;
-  box-shadow: 0px .2em .2px #3896d3;
-}
 
-button:hover {
-  color: #fff;
-  background-color: #51aae6;
-  border: none;
-  border-radius: .3em;
-  box-shadow: 0px .2em 0px #76bceb;
-}
 
 .help {
   background-color: #eee;

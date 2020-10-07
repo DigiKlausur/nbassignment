@@ -3,9 +3,10 @@
 import os
 from setuptools import setup, find_packages
 
+taskcreator_path = os.path.join('nbassignment', 'server_extensions', 'taskcreator')
 # get paths to all the extension files
 extension_files = []
-for (dirname, dirnames, filenames) in os.walk("nbassignment/nbextensions"):
+for (dirname, dirnames, filenames) in os.walk(os.path.join('nbassignment', 'nbextensions')):
     root = os.path.relpath(dirname, "nbassignment")
     for filename in filenames:
         if filename.endswith(".pyc"):
@@ -13,16 +14,16 @@ for (dirname, dirnames, filenames) in os.walk("nbassignment/nbextensions"):
         extension_files.append(os.path.join(root, filename))
 
 static_files = []
-for (dirname, dirnames, filenames) in os.walk("nbassignment/server_extensions/taskcreator/static"):
-    root = os.path.relpath(dirname, "nbassignment/server_extensions/taskcreator")
+for (dirname, dirnames, filenames) in os.walk(os.path.join(taskcreator_path, 'static')):
+    root = os.path.relpath(dirname, taskcreator_path)
     for filename in filenames:
         static_files.append(os.path.join(root, filename))
-for (dirname, dirnames, filenames) in os.walk("nbassignment/server_extensions/taskcreator/templates"):
-    root = os.path.relpath(dirname, "nbassignment/server_extensions/taskcreator")
+for (dirname, dirnames, filenames) in os.walk(os.path.join(taskcreator_path, 'templates')):
+    root = os.path.relpath(dirname, taskcreator_path)
     for filename in filenames:
         static_files.append(os.path.join(root, filename))
-for (dirname, dirnames, filenames) in os.walk("nbassignment/server_extensions/taskcreator/presets"):
-    root = os.path.relpath(dirname, "nbassignment/server_extensions/taskcreator")
+for (dirname, dirnames, filenames) in os.walk(os.path.join(taskcreator_path, 'presets')):
+    root = os.path.relpath(dirname, taskcreator_path)
     for filename in filenames:
         static_files.append(os.path.join(root, filename))
 

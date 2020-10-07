@@ -1,5 +1,6 @@
 #template_type {
     padding-right: 1em;
+    padding-left: 1em;
 }
 
 .template_highlight .ctb_show div {
@@ -9,8 +10,4 @@
 
 .template_highlight .celltoolbar > div {
   width: 100%;
-}
-
-#template_type {
-  padding-left: 1em;
 }

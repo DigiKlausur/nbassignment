@@ -93,7 +93,7 @@ define([
             .attr('title', 'run selected cell(s)')
             .click(() => Jupyter.notebook.execute_cell());
 
-        $('#run_int > button').first().replaceWith(btn);;
+        $('#run_int > button').first().replaceWith(btn);
     }
 
     function remap_key_bindings() {

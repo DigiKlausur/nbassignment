@@ -30,7 +30,7 @@ class TaskcreatorExtension(NbGrader):
 
     def init_tornado_settings(self, webapp):
         # Init jinja environment
-        jinja_env = Environment(loader=FileSystemLoader([handlers.template_path]))
+        jinja_env = Environment(loader=FileSystemLoader([handlers.template_path]), autoescape=True)
         self.log.info('[NBASSIGNMENT] Template Path {}'.format(handlers.template_path))
 
         # Configure the formgrader settings

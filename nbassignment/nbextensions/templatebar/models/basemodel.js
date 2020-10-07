@@ -9,7 +9,7 @@ define ([
     var get_role = function (cell) {
         if (cell.metadata.hasOwnProperty(field) && cell.metadata[field].hasOwnProperty('type')) {
             return cell.metadata[field].type;
-        };
+        }
         return '';
     };
 

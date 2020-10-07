@@ -7,7 +7,9 @@ from tornado import web
 
 from .base import BaseHandler, check_xsrf, check_notebook_dir
 
-from ...models import *
+from ...models import (
+    AssignmentModel, TemplateModel, TaskModel,
+    TaskPoolModel, ExerciseModel)
 
 class Template404(BaseHandler):
     """Render our 404 template"""

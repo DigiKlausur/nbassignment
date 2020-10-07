@@ -8,8 +8,11 @@
 
 .mid-col button {
   display: block;
-  
+  width: 6em;
+  margin: auto;
+  margin-top: .5em;  
 }
+
 .side-col {
   width: 40%;
 }
@@ -28,12 +31,6 @@
 
 select[name=pool] {
   margin-left: 1em;
-}
-
-.mid-col button {
-  width: 6em;
-  margin: auto;
-  margin-top: .5em;
 }
 
 .e2xtable {

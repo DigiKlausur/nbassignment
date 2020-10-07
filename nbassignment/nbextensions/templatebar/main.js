@@ -5,12 +5,12 @@ define([
     'notebook/js/celltoolbar',
     'base/js/events',
     './models/basemodel'
-], function (require, $, Jupyter, celltoolbar, events, model) {
+], function (require, $, Jupyter, nbcelltoolbar, events, model) {
 
     "use strict";
 
     var preset_name = 'Create Template';
-    var CellToolbar = celltoolbar.CellToolbar;
+    var CellToolbar = nbcelltoolbar.CellToolbar;
 
     CellToolbar.prototype.old_rebuild = CellToolbar.prototype.rebuild;
     CellToolbar.prototype.rebuild = function () {

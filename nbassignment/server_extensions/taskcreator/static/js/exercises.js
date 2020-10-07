@@ -18,7 +18,7 @@ function addExercise(assignment) {
         'Add Exercise': {
             click: function () {
                 window.open("/taskcreator/assignments/" + assignment + "/" + $('#exercise-name').val());
-                location = location;
+                location.reload();
             },
             id: 'add-exercise-btn'
         },

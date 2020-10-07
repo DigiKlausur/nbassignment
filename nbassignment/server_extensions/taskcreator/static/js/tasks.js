@@ -18,7 +18,7 @@ function addTask(pool) {
         'Add Task': {
             click: function () {
                 window.open("/taskcreator/pools/" + pool + "/new/" + $('#task-name').val());
-                location = location;
+                location.reload();
             },
             id: 'add-task-btn'
         },

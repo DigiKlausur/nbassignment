@@ -18,7 +18,7 @@ function addTemplate() {
         'Add Template': {
             click: function () {
                 window.open("/taskcreator/templates/new/" + $('#template-name').val());
-                location = location;
+                location.reload();
             },
             id: 'add-template-btn'
         },

@@ -33,7 +33,8 @@ def _jupyter_nbextension_paths():
 
 def _jupyter_server_extension_paths():
     paths = [
-        dict(module="nbassignment.server_extensions.taskcreator")
+        dict(module="nbassignment.server_extensions.taskcreator"),
+        dict(module="nbassignment.server_extensions.ui")
     ]
 
     return paths

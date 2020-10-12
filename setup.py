@@ -27,6 +27,23 @@ for (dirname, dirnames, filenames) in os.walk(os.path.join(taskcreator_path, 'pr
     for filename in filenames:
         static_files.append(os.path.join(root, filename))
 
+
+ui_path = os.path.join('nbassignment', 'server_extensions', 'ui')
+
+ui_static_files = []
+for (dirname, dirnames, filenames) in os.walk(os.path.join(ui_path, 'static')):
+    root = os.path.relpath(dirname, ui_path)
+    for filename in filenames:
+        ui_static_files.append(os.path.join(root, filename))
+for (dirname, dirnames, filenames) in os.walk(os.path.join(ui_path, 'templates')):
+    root = os.path.relpath(dirname, ui_path)
+    for filename in filenames:
+        ui_static_files.append(os.path.join(root, filename))
+for (dirname, dirnames, filenames) in os.walk(os.path.join(ui_path, 'presets')):
+    root = os.path.relpath(dirname, ui_path)
+    for filename in filenames:
+        ui_static_files.append(os.path.join(root, filename))
+
 name = u'nbassignment'
 
 setup_args = dict(
@@ -48,6 +65,7 @@ setup_args = dict(
     package_data={
         'nbassignment': extension_files,
         'nbassignment.server_extensions.taskcreator': static_files,
+        'nbassignment.server_extensions.ui': ui_static_files,
     },
     install_requires=[
         "jupyter",

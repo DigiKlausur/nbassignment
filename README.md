@@ -1,5 +1,7 @@
 # nbassignment
-Tools to create assignments with Jupyter notebook
+Tools to create assignments with Jupyter notebook.
+
+All information can be found under https://digiklausur.github.io/nbassignment/nbassignment.html
 
 
 ## Install

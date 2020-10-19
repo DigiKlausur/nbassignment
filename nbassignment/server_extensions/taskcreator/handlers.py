@@ -16,6 +16,32 @@ class Template404(BaseHandler):
     def prepare(self):
         raise web.HTTPError(404)
 
+class TestHandler(BaseHandler):
+
+    @web.authenticated
+    @check_xsrf
+    def get(self):
+        html = self.render(
+            "redesign/test.tpl",
+            url_prefix=self.url_prefix,
+            base_url=self.base_url,
+            windows=(sys.prefix == 'win32'))
+        self.write(html)
+
+class TestAssignmentHandler(BaseHandler):
+
+    @web.authenticated
+    @check_xsrf
+    def get(self, assignment):
+        html = self.render(
+            "redesign/assignment.tpl",
+            url_prefix=self.url_prefix,
+            base_url=self.base_url,
+            assignment_name=assignment,
+            windows=(sys.prefix == 'win32'))
+        self.write(html)
+
+
 class TaskcreatorHandler(BaseHandler):
 
     @web.authenticated
@@ -231,4 +257,7 @@ default_handlers = [
     (r"/taskcreator/pools/(?P<pool>[^/]+)/{}/(?P<name>[^/]+)/?".format(_navigation_regex), TaskHandler),
     (r"/taskcreator/templates/?", ManageTemplatesHandler),
     (r"/taskcreator/templates/{}/(?P<name>[^/]+)/?".format(_navigation_regex), TemplateHandler),
+
+    (r"/taskcreator/test/?", TestHandler),
+    (r"/taskcreator/assignment/(?P<assignment>[^/]+)/?", TestAssignmentHandler)
 ]

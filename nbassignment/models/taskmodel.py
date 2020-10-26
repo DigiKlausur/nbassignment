@@ -3,8 +3,15 @@ import nbformat
 import shutil
 from textwrap import dedent
 from .basemodel import BaseModel
+from traitlets import Unicode
+
 
 class TaskModel(BaseModel):
+
+    directory = Unicode(
+        'pools',
+        help='The directory where the task pools go.'
+    )
 
     def new_taskbook(self, name):
         nb = nbformat.v4.new_notebook()
@@ -38,7 +45,7 @@ class TaskModel(BaseModel):
         return nb
 
     def new(self, name, pool):
-        base_path = os.path.join('pools', pool)
+        base_path = os.path.join(self.base_path(), pool)
         os.makedirs(os.path.join(base_path, name, 'img'), exist_ok=True)
         os.makedirs(os.path.join(base_path, name, 'data'), exist_ok=True)
         filename = '{}.ipynb'.format(name)
@@ -50,11 +57,11 @@ class TaskModel(BaseModel):
         return url
 
     def remove(self, name, pool):
-        base_path = os.path.join('pools', pool)
+        base_path = os.path.join(self.base_path(), pool)
         shutil.rmtree(os.path.join(base_path, name))
     
     def list(self, pool):
-        base_path = os.path.join('pools', pool)
+        base_path = os.path.join(self.base_path(), pool)
         taskfolders = os.listdir(base_path)
         tasks = []
         for taskfolder in taskfolders:
@@ -69,7 +76,7 @@ class TaskModel(BaseModel):
         return tasks
 
     def __get_task_info(self, task, pool):
-        base_path = os.path.join('pools', pool)
+        base_path = os.path.join(self.base_path(), pool)
         notebooks = [file for file in os.listdir(os.path.join(base_path, task)) if file.endswith('.ipynb')]
 
         points = 0

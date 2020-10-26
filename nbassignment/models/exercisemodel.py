@@ -2,11 +2,19 @@ import os
 import glob
 import shutil
 from .basemodel import BaseModel
+from ..coursedir import CourseDirectory
+from traitlets import Unicode
+
 
 class ExerciseModel(BaseModel):
 
+    directory = Unicode(
+        CourseDirectory().coursedir.source_directory,
+        help='The directory where the task pools go.'
+    )
+
     def remove(self, assignment, name):
-        base_path = os.path.join('source', assignment)
+        base_path = os.path.join(self.base_path(), assignment)
         exercise_files = os.path.join(base_path, '{}_files'.format(name))
         if os.path.exists(exercise_files):
             shutil.rmtree(exercise_files)
@@ -15,7 +23,7 @@ class ExerciseModel(BaseModel):
             os.remove(exercise)
 
     def list(self, assignment):
-        base_path = os.path.join('source', assignment)
+        base_path = os.path.join(self.base_path(), assignment)
         exercisenbs = glob.glob(os.path.join(base_path, '*.ipynb'))
         exercises = []
         for exercisenb in exercisenbs:

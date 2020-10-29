@@ -57,7 +57,7 @@ export function exerciseOptions() {
 
 }
 
-export function templateOptions() {
+export function templateOptions(base_url) {
     let template = $('#template');
     if (template.length > 0) {
         template.change(function () {
@@ -65,7 +65,7 @@ export function templateOptions() {
             $('#template-options').empty();
             if (choosen != '') {
                 $.ajax({
-                    url: "/taskcreator/api/templates/variables",
+                    url: base_url + "/taskcreator/api/templates/variables",
                     type: "get",
                     data: {
                         'template': choosen
@@ -86,7 +86,7 @@ export function templateOptions() {
     }
 }
 
-export function generateExercise(exercise, assignment) {
+export function generateExercise(exercise, assignment, base_url) {
     let generate_button = $('<button/>')
         .attr('id', 'generate-exercise')
         .text('Generate Exercise');
@@ -120,14 +120,14 @@ export function generateExercise(exercise, assignment) {
             'exercise_options': exercise_options
         });
         $.ajax({
-            url: "/taskcreator/api/generate_exercise",
+            url: base_url + "/taskcreator/api/generate_exercise",
             type: "get",
             dataType: 'json',
             'data': {
                 'resources': data
             },
             success: function(response) {
-                window.open('/notebooks/source/' + assignment + '/' + exercise + '.ipynb', '_self');
+                window.open(base_url + '/notebooks/source/' + assignment + '/' + exercise + '.ipynb', '_self');
             },
             error: function(xhr) {
                 console.log('Oh no!')
@@ -139,7 +139,7 @@ export function generateExercise(exercise, assignment) {
     $('#generate').append(generate_button);
 }
 
-export function addTaskSelector(pools) {
+export function addTaskSelector(pools, base_url) {
     let table = $('<table/>')
         .attr('id', 'tasks');
 
@@ -161,7 +161,7 @@ export function addTaskSelector(pools) {
         $('#pool-tasks').empty();
         if (pool != '') {
             $.ajax({
-                url: "/taskcreator/api/tasks",
+                url: base_url + "/taskcreator/api/tasks",
                 type: "get",
                 data: {
                     'pool': pool

@@ -3,7 +3,7 @@
 {% block head %}
 <script type="module">
     import addAssignmentTable from "{{ base_url }}/taskcreator/static/js/assignments.js";
-    addAssignmentTable({{ assignments }});    
+    addAssignmentTable({{ assignments }}, "{{ base_url }}");    
 </script>
 {% endblock head %}
 

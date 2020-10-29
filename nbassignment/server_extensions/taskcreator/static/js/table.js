@@ -33,7 +33,7 @@ export class Table {
             that.data.columns.forEach(function (column) {
                 if (column[0] === "Name" && entry.hasOwnProperty('link')) {
                     row.append($('<td/>').append($('<a/>')
-                        .attr('href', '/' + entry.link)
+                        .attr('href', that.base_url + '/' + entry.link)
                         .attr('target', that.target)
                         .text(entry[column[1]])));
                 } else {

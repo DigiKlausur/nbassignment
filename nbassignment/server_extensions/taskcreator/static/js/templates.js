@@ -1,7 +1,7 @@
 import {EditableTable} from "./table.js";
 import Modal from "./modal.js";
 
-function addTemplate() {
+function addTemplate(base_url) {
 
     let body = $('<div/>');
     let table = $('<table/>').addClass('e2xtable');
@@ -17,7 +17,7 @@ function addTemplate() {
     let buttons = {
         'Add Template': {
             click: function () {
-                window.open("/taskcreator/templates/new/" + $('#template-name').val());
+                window.open(base_url + "/taskcreator/templates/new/" + $('#template-name').val());
                 location.reload();
             },
             id: 'add-template-btn'
@@ -76,7 +76,7 @@ export default function addTemplateTable(templates, base_url) {
         .addClass('e2xbutton')
         .attr('id', 'add-template')
         .text('Add Template')
-        .click(addTemplate);
+        .click(() => addTemplate(base_url));
 
     let div = $('<div/>').attr('id', 'templatediv');
     div.append(table);

@@ -1,7 +1,7 @@
 import {EditableTable} from "./table.js";
 import Modal from "./modal.js";
 
-function addTask(pool) {
+function addTask(pool, base_url) {
 
     let body = $('<div/>');
     let table = $('<table/>').addClass('e2xtable');
@@ -17,7 +17,7 @@ function addTask(pool) {
     let buttons = {
         'Add Task': {
             click: function () {
-                window.open("/taskcreator/pools/" + pool + "/new/" + $('#task-name').val());
+                window.open(base_url + "/taskcreator/pools/" + pool + "/new/" + $('#task-name').val());
                 location.reload();
             },
             id: 'add-task-btn'
@@ -59,15 +59,13 @@ export default function addTaskTable(tasks, pool, base_url) {
             deleteTask(task, pool);
         }
     }
-    let table = new EditableTable(table_data, '_blank', base_url=base_url).make_table();
+    let table = new EditableTable(table_data, '_blank', base_url).make_table();
 
     let add_task = $('<button/>')
         .addClass('e2xbutton')
         .attr('id', 'add-task')
         .text('Add Task')
-        .click(function () {
-            addTask(pool);
-        });
+        .click(() => addTask(pool, base_url));
 
     let div = $('<div/>').attr('id', 'taskdiv');
     div.append(table);

@@ -1,6 +1,6 @@
 import {Table} from "./table.js";
 
-export default function addAssignmentTable(assignments) {
+export default function addAssignmentTable(assignments, base_url) {
     let table_data = {
         "id": "tasktable",
         "columns": [
@@ -11,7 +11,7 @@ export default function addAssignmentTable(assignments) {
     }
 
     let div = $('<div/>').attr('id', 'assignmentdiv');
-    div.append(new Table(table_data).make_table());
+    div.append(new Table(table_data, '_self', base_url).make_table());
 
     $('.body').append(div);
 }

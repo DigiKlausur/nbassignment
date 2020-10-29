@@ -52,7 +52,7 @@ function deletePool(name) {
     new Modal(title, body, buttons).open();
 }
 
-export default function addTaskPoolTable(pools) {
+export default function addTaskPoolTable(pools, base_url) {
     let table_data = {
         "id": "taskpooltable",
         "columns": [
@@ -66,7 +66,7 @@ export default function addTaskPoolTable(pools) {
             deletePool(pool.name);
         }
     }
-    let table = new EditableTable(table_data).make_table();
+    let table = new EditableTable(table_data, base_url=base_url).make_table();
 
     let add_pool = $('<button/>')
         .addClass('e2xbutton')

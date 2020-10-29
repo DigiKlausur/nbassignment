@@ -51,7 +51,7 @@ function deleteExercise(exercise, assignment) {
     new Modal(title, body, buttons).open();
 }
 
-export default function addExerciseTable(exercises, assignment) {
+export default function addExerciseTable(exercises, assignment, base_url) {
     let table_data = {
         "id": "exercisetable",
         "columns": [
@@ -63,7 +63,7 @@ export default function addExerciseTable(exercises, assignment) {
             deleteExercise(exercise, assignment);
         }
     };
-    let table = new EditableTable(table_data, '_blank').make_table();
+    let table = new EditableTable(table_data, '_blank', base_url=base_url).make_table();
 
     let add_exercise = $('<button/>')
         .addClass('e2xbutton')

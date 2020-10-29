@@ -3,7 +3,7 @@
 {% block head %}
 <script type="module">    
     import addTaskTable from "{{ base_url }}/taskcreator/static/js/tasks.js";
-    addTaskTable({{ tasks }}, "{{ pool }}");
+    addTaskTable({{ tasks }}, "{{ pool }}", {{ base_url }});
 </script>
 {% endblock head %}
 

@@ -1,8 +1,9 @@
 export class Table {
 
-    constructor(data, target='_self') {
+    constructor(data, target='_self', base_url='') {
         this.data = data;
         this.target = target;
+        this.base_url = base_url;
     }
 
     make_header(table) {
@@ -79,13 +80,13 @@ export class EditableTable extends Table {
                 let cell = $('<td/>');
                 if (column[0] === "Name" && entry.hasOwnProperty('link')) {
                     cell.append($('<a/>')
-                        .attr('href', '/' + entry.link)
+                        .attr('href', that.base_url + '/' + entry.link)
                         .attr('target', that.target)
                         .text(entry[column[1]]));
                 } else if (column[0] === 'Edit') {
                     cell.append(
                         that.make_fa_button('fa fa-edit', 
-                            () => window.open('/' + entry[column[1]], '_blank'))
+                            () => window.open(that.base_url + '/' + entry.link, '_blank'))
                     );
                 } else if (column[0] === 'Delete') {
                     cell.append(

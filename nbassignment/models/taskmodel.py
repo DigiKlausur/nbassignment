@@ -13,6 +13,9 @@ class TaskModel(BaseModel):
         help='The directory where the task pools go.'
     )
 
+    def __init__(self, course_prefix):
+        super().__init__(course_prefix)
+
     def new_taskbook(self, name):
         nb = nbformat.v4.new_notebook()
         
@@ -52,9 +55,7 @@ class TaskModel(BaseModel):
         nb = self.new_taskbook(name)
         path = os.path.join(base_path, name, filename)
         nbformat.write(nb, path)
-        url = os.path.join('/', 'notebooks', base_path, name, filename)
-
-        return url
+        return path
 
     def remove(self, name, pool):
         base_path = os.path.join(self.base_path(), pool)

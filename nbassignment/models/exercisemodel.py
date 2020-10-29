@@ -2,16 +2,18 @@ import os
 import glob
 import shutil
 from .basemodel import BaseModel
-from ..coursedir import CourseDirectory
 from traitlets import Unicode
 
 
 class ExerciseModel(BaseModel):
 
     directory = Unicode(
-        CourseDirectory().coursedir.source_directory,
-        help='The directory where the task pools go.'
+        'source',
+        help='The directory where assignments go.'
     )
+
+    def __init__(self, course_prefix):
+        super().__init__(course_prefix)
 
     def remove(self, assignment, name):
         base_path = os.path.join(self.base_path(), assignment)

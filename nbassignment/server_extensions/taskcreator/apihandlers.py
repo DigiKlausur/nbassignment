@@ -11,7 +11,7 @@ from ...utils import NotebookVariableExtractor
 class PresetHandler(BaseApiHandler):
 
     def initialize(self):
-        self.__model = PresetModel()
+        self.__model = PresetModel(self.url_prefix)
 
     def _list_template(self):
         self.write(json.dumps(self.__model.list_template_presets()))
@@ -46,7 +46,7 @@ class ListTasksHandler(BaseApiHandler):
     @check_xsrf
     def get(self):
         pool = self.get_argument("pool");
-        tasks = TaskModel().list(pool)
+        tasks = TaskModel(self.url_prefix).list(pool)
         self.write(json.dumps(tasks))
 
 class GenerateExerciseHandler(BaseApiHandler):
@@ -54,7 +54,7 @@ class GenerateExerciseHandler(BaseApiHandler):
     @check_xsrf
     def get(self):
         resources = json.loads(self.get_argument("resources"))
-        GenerateExercise().convert(resources)
+        GenerateExercise(course_prefix=self.url_prefix).convert(resources)
         self.write({"status": True})
 
 class TemplateVariableHandler(BaseApiHandler):
@@ -62,7 +62,7 @@ class TemplateVariableHandler(BaseApiHandler):
     @check_xsrf
     def get(self):
         template = self.get_argument("template");
-        variables = NotebookVariableExtractor().extract(os.path.join('templates', template, '{}.ipynb'.format(template)))
+        variables = NotebookVariableExtractor().extract(os.path.join(self.url_prefix, 'templates', template, '{}.ipynb'.format(template)))
         self.write(json.dumps(variables))
         
 default_handlers = [

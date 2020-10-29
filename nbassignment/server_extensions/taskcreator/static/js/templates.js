@@ -57,7 +57,7 @@ function make_fa_button(cls, click) {
     return btn;
 }
 
-export default function addTemplateTable(templates) {
+export default function addTemplateTable(templates, base_url) {
     let table_data = {
         "id": "templatetable",
         "columns": [
@@ -70,7 +70,7 @@ export default function addTemplateTable(templates) {
             deleteTemplate(template.name);
         }
     }
-    let table = new EditableTable(table_data, '_blank').make_table();
+    let table = new EditableTable(table_data, '_blank', base_url).make_table();
 
     let add_template = $('<button/>')
         .addClass('e2xbutton')

@@ -154,7 +154,7 @@ class TaskPoolHandler(BaseHandler):
         self._model = TaskPoolModel(self.url_prefix)
 
     def _new(self, name):
-        url = self._model.new(name)
+        self._model.new(name)
         self.redirect(f'{self.base_url}/taskcreator/pools/{name}')
 
     def _remove(self, name):

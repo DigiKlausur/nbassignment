@@ -30,7 +30,7 @@ function addPool(base_url) {
     new Modal(title, body, buttons).open();
 }
 
-function deletePool(name) {
+function deletePool(name, base_url) {
 
     let body = $('<div/>');
     body.append($('<p/>').text('Do you want to delete the taskpool ' + name + '?'));
@@ -40,7 +40,7 @@ function deletePool(name) {
     let buttons = {
         'Delete Taskpool': {
             click: function () {
-                window.open("/taskcreator/pools/remove/" + name, '_self');
+                window.open(base_url + "/taskcreator/pools/remove/" + name, '_self');
             },
             id: 'delete-pool-btn'
         },
@@ -63,7 +63,7 @@ export default function addTaskPoolTable(pools, base_url) {
         ],
         "entries": pools,
         "deleteEntry": function (pool) {
-            deletePool(pool.name);
+            deletePool(pool.name, base_url);
         }
     }
     let table = new EditableTable(table_data, '_self', base_url).make_table();

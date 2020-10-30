@@ -30,7 +30,7 @@ function addTemplate(base_url) {
     new Modal(title, body, buttons).open();
 }
 
-function deleteTemplate(name) {
+function deleteTemplate(name, base_url) {
 
     let body = $('<div/>');
     body.append($('<span/>').text('Do you want to delete the template ' + name + '?'))
@@ -39,7 +39,7 @@ function deleteTemplate(name) {
     let buttons = {
         'Delete Template': {
             click: function () {
-                window.open("/taskcreator/templates/remove/" + name, '_self');
+                window.open(base_url + "/taskcreator/templates/remove/" + name, '_self');
             },
             id: 'delete-template-btn'
         },
@@ -67,7 +67,7 @@ export default function addTemplateTable(templates, base_url) {
         ],
         "entries": templates,
         "deleteEntry": function (template) {
-            deleteTemplate(template.name);
+            deleteTemplate(template.name, base_url);
         }
     }
     let table = new EditableTable(table_data, '_blank', base_url).make_table();

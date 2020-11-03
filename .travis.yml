@@ -12,8 +12,7 @@ install:
 addons:
   sonarcloud:
     organization: "digiklausur"
-    token:
-      secure: ${SONAR_TOKEN}
+    token: ${SONAR_TOKEN}
 script:
   - py.test --cov nbassignment -v --cov-report xml
   - sonar-scanner

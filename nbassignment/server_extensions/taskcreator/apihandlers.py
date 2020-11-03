@@ -2,6 +2,7 @@ import json
 import os
 
 from tornado import web
+from jupyter_client.kernelspec import KernelSpecManager
 
 from .base import BaseApiHandler, check_xsrf, check_notebook_dir
 from ...models import TaskModel, PresetModel
@@ -65,10 +66,17 @@ class TemplateVariableHandler(BaseApiHandler):
         variables = NotebookVariableExtractor().extract(os.path.join(self.url_prefix, 'templates', template, '{}.ipynb'.format(template)))
         self.write(json.dumps(variables))
         
+class KernelSpecHandler(BaseApiHandler):
+    @web.authenticated
+    @check_xsrf
+    def get(self):
+        self.write(json.dumps(KernelSpecManager().get_all_specs()))
+        
 default_handlers = [
     (r"/taskcreator/api/status", StatusHandler),
     (r"/taskcreator/api/tasks", ListTasksHandler),
     (r"/taskcreator/api/generate_exercise", GenerateExerciseHandler),
     (r"/taskcreator/api/templates/variables", TemplateVariableHandler),
-    (r"/taskcreator/api/presets", PresetHandler)
+    (r"/taskcreator/api/presets", PresetHandler),
+    (r"/taskcreator/api/kernelspec", KernelSpecHandler),
 ]

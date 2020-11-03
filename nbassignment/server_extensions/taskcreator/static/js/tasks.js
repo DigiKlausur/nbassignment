@@ -1,7 +1,7 @@
 import {EditableTable} from "./table.js";
 import Modal from "./modal.js";
 
-function addTask(pool) {
+function addTask(pool, base_url) {
 
     let body = $('<div/>');
     let table = $('<table/>').addClass('e2xtable');
@@ -17,7 +17,7 @@ function addTask(pool) {
     let buttons = {
         'Add Task': {
             click: function () {
-                window.open("/taskcreator/pools/" + pool + "/new/" + $('#task-name').val());
+                window.open(base_url + "/taskcreator/pools/" + pool + "/new/" + $('#task-name').val());
                 location.reload();
             },
             id: 'add-task-btn'
@@ -27,7 +27,7 @@ function addTask(pool) {
     new Modal('Add Task', body, buttons).open();
 }
 
-function deleteTask(task, pool) {
+function deleteTask(task, pool, base_url) {
     let body = $('<div/>');
     let name = task.name;
     body.append($('<span/>').text('Do you want to delete the task ' + name + '?'));    
@@ -35,7 +35,7 @@ function deleteTask(task, pool) {
     let buttons = {
         'Delete Task': {
             click: function () {
-                window.open("/taskcreator/pools/" + pool + "/remove/" + name, '_self');
+                window.open(base_url + "/taskcreator/pools/" + pool + "/remove/" + name, '_self');
             },
             id: 'delete-task-btn'
         },
@@ -44,7 +44,7 @@ function deleteTask(task, pool) {
     new Modal('Delete Task', body, buttons).open();
 }
 
-export default function addTaskTable(tasks, pool) {
+export default function addTaskTable(tasks, pool, base_url) {
     let table_data = {
         "id": "tasktable",
         "columns": [
@@ -56,18 +56,16 @@ export default function addTaskTable(tasks, pool) {
         ],
         "entries": tasks,
         "deleteEntry": function (task) {
-            deleteTask(task, pool);
+            deleteTask(task, pool, base_url);
         }
     }
-    let table = new EditableTable(table_data, '_blank').make_table();
+    let table = new EditableTable(table_data, '_blank', base_url).make_table();
 
     let add_task = $('<button/>')
         .addClass('e2xbutton')
         .attr('id', 'add-task')
         .text('Add Task')
-        .click(function () {
-            addTask(pool);
-        });
+        .click(() => addTask(pool, base_url));
 
     let div = $('<div/>').attr('id', 'taskdiv');
     div.append(table);

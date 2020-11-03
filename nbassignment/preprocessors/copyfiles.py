@@ -71,7 +71,8 @@ class CopyFiles(Preprocessor):
     
     def preprocess(self, resources):
         file_folder = os.path.join(
-            'source', 
+            resources['course_prefix'],
+            resources['source_dir'],
             resources['assignment'],
             '{}_files'.format(resources['exercise'])
         )

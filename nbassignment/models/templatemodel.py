@@ -9,11 +9,12 @@ class TemplateModel(BaseModel):
 
     directory = Unicode(
         'templates',
-        help='The directory where the task pools go.'
+        help='The directory where the templates go.'
     )
 
-    def __init__(self):
-        os.makedirs(self.base_path(), exist_ok=True)
+    def __init__(self, course_prefix):
+        super().__init__(course_prefix)
+        os.makedirs(self.base_path(), exist_ok=True)                
 
     def new(self, name):
         os.makedirs(os.path.join(self.base_path(), name, 'img'), exist_ok=True)
@@ -25,9 +26,7 @@ class TemplateModel(BaseModel):
         }
         path = os.path.join(self.base_path(), name, filename)
         nbformat.write(nb, path)
-        url = os.path.join('/', 'notebooks', 'templates', name, filename)
-
-        return url
+        return os.path.join('notebooks', path)
 
     def remove(self, name):
         shutil.rmtree(os.path.join(self.base_path(), name))
@@ -38,7 +37,7 @@ class TemplateModel(BaseModel):
         for templatefolder in templatefolders:
             templates.append({
                 'name': templatefolder,
-                'link': os.path.join('tree', 'templates', templatefolder)
+                'link': os.path.join('tree', self.base_path(), templatefolder)
             })
         
         return templates

@@ -1,7 +1,7 @@
 import {EditableTable} from "./table.js";
 import Modal from "./modal.js";
 
-function addPool() {
+function addPool(base_url) {
 
     let body = $('<div/>');
     let table = $('<table/>').addClass('e2xtable');
@@ -17,7 +17,7 @@ function addPool() {
     let buttons = {
         'Add Taskpool': {
             click: function () {
-                window.open("/taskcreator/pools/new/" + $('#pool-name').val());
+                window.open(base_url + "/taskcreator/pools/new/" + $('#pool-name').val());
                 location.reload();
             },
             id: 'add-pool-btn'
@@ -30,7 +30,7 @@ function addPool() {
     new Modal(title, body, buttons).open();
 }
 
-function deletePool(name) {
+function deletePool(name, base_url) {
 
     let body = $('<div/>');
     body.append($('<p/>').text('Do you want to delete the taskpool ' + name + '?'));
@@ -40,7 +40,7 @@ function deletePool(name) {
     let buttons = {
         'Delete Taskpool': {
             click: function () {
-                window.open("/taskcreator/pools/remove/" + name, '_self');
+                window.open(base_url + "/taskcreator/pools/remove/" + name, '_self');
             },
             id: 'delete-pool-btn'
         },
@@ -52,7 +52,7 @@ function deletePool(name) {
     new Modal(title, body, buttons).open();
 }
 
-export default function addTaskPoolTable(pools) {
+export default function addTaskPoolTable(pools, base_url) {
     let table_data = {
         "id": "taskpooltable",
         "columns": [
@@ -63,16 +63,16 @@ export default function addTaskPoolTable(pools) {
         ],
         "entries": pools,
         "deleteEntry": function (pool) {
-            deletePool(pool.name);
+            deletePool(pool.name, base_url);
         }
     }
-    let table = new EditableTable(table_data).make_table();
+    let table = new EditableTable(table_data, '_self', base_url).make_table();
 
     let add_pool = $('<button/>')
         .addClass('e2xbutton')
         .attr('id', 'add-pool')
         .text('Add Taskpool')
-        .click(addPool);
+        .click(() => addPool(base_url));
 
     let div = $('<div/>').attr('id', 'taskdiv');
     div.append(table);

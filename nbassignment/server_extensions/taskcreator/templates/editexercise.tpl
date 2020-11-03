@@ -4,10 +4,10 @@
 <link rel="stylesheet" href="{{ base_url }}/taskcreator/static/css/editexercise.css" type="text/css">
 <script type="module">    
     import {addTaskSelector, generateExercise, templateOptions, exerciseOptions} from "{{ base_url }}/taskcreator/static/js/editexercise.js";
-    addTaskSelector({{ pools }});
-    templateOptions();
+    addTaskSelector({{ pools }}, "{{ base_url }}");
+    templateOptions("{{ base_url }}");
     exerciseOptions();
-    generateExercise("{{ exercise }}", "{{ assignment }}");
+    generateExercise("{{ exercise }}", "{{ assignment }}", "{{ base_url }}");
 </script>
 {% endblock head %}
 

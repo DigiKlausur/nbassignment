@@ -11,11 +11,13 @@ class TaskPoolModel(BaseModel):
         help='The directory where the task pools go.'
     )
 
+    def __init__(self, course_prefix):
+        super().__init__(course_prefix)
+
     def new(self, name):
         path = os.path.join(self.base_path(), name)
         os.makedirs(path, exist_ok=True)
-        url = os.path.join('/', 'taskcreator', 'pools', name)
-        return url
+        return path
 
     def remove(self, name):
         path = os.path.join(self.base_path(), name)

@@ -6,7 +6,8 @@ class RemoveExercise(Preprocessor):
 
     def preprocess(self, resources):
         base_path = os.path.join(
-            'source',
+            resources['course_prefix'],
+            resources['source_dir'],
             resources['assignment']
         )
         exercise_files = os.path.join(

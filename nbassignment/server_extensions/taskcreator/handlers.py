@@ -22,20 +22,12 @@ class TaskcreatorHandler(BaseHandler):
     @check_xsrf
     @check_notebook_dir
     def get(self):
-        '''
-        html = self.render(
-            "taskcreator.tpl",
-            url_prefix=self.url_prefix,
-            base_url=self.base_url,
-            windows=(sys.prefix == 'win32'))
-        self.write(html)
-        '''
-        self.redirect('/taskcreator/assignments')
+        self.redirect(f'{self.base_url}/taskcreator/assignments')
 
 class ManageAssignmentsHandler(BaseHandler):
 
     def initialize(self):
-        self._model = AssignmentModel()
+        self._model = AssignmentModel(self.url_prefix)
 
     @web.authenticated
     @check_xsrf
@@ -52,7 +44,7 @@ class ManageAssignmentsHandler(BaseHandler):
 class ManageExercisesHandler(BaseHandler):
 
     def initialize(self):
-        self._model = ExerciseModel()
+        self._model = ExerciseModel(self.url_prefix)
 
     @web.authenticated
     @check_xsrf
@@ -70,11 +62,11 @@ class ManageExercisesHandler(BaseHandler):
 class ExerciseHandler(BaseHandler):
 
     def initialize(self):
-        self._model = ExerciseModel()
+        self._model = ExerciseModel(self.url_prefix)
 
     def _remove(self, name, assignment):
         self._model.remove(assignment, name)
-        self.redirect('/taskcreator/assignments/{}'.format(assignment))        
+        self.redirect(f'{self.base_url}/taskcreator/assignments/{assignment}')        
 
     @web.authenticated
     @check_xsrf
@@ -85,7 +77,7 @@ class ExerciseHandler(BaseHandler):
 class EditExercisesHandler(BaseHandler):
 
     def initialize(self):
-        self._model = ExerciseModel()
+        self._model = ExerciseModel(self.url_prefix)
 
     @web.authenticated
     @check_xsrf
@@ -97,15 +89,15 @@ class EditExercisesHandler(BaseHandler):
             base_url=self.base_url,
             exercise=exercise,
             assignment=assignment,
-            templates=TemplateModel().list(),
-            pools=TaskPoolModel().list(),
+            templates=TemplateModel(self.url_prefix).list(),
+            pools=TaskPoolModel(self.url_prefix).list(),
             windows=(sys.prefix == 'win32'))
         self.write(html)
 
 class ManageTasksHandler(BaseHandler):
 
     def initialize(self):
-        self._model = TaskModel()
+        self._model = TaskModel(self.url_prefix)
 
     @web.authenticated
     @check_xsrf
@@ -123,15 +115,15 @@ class ManageTasksHandler(BaseHandler):
 class TaskHandler(BaseHandler):
 
     def initialize(self):
-        self._model = TaskModel()
+        self._model = TaskModel(self.url_prefix)
 
     def _new(self, name, pool):
-        url = self._model.new(name, pool)
-        self.redirect(url)
+        path = self._model.new(name, pool)
+        self.redirect(f'{self.base_url}/notebooks/{path}')
 
     def _remove(self, name, pool):
         self._model.remove(name, pool)
-        self.redirect('/taskcreator/pools/{}'.format(pool))        
+        self.redirect(f'{self.base_url}/taskcreator/pools/{pool}')        
 
     @web.authenticated
     @check_xsrf
@@ -142,7 +134,7 @@ class TaskHandler(BaseHandler):
 class ManageTaskPoolsHandler(BaseHandler):
 
     def initialize(self):
-        self._model = TaskPoolModel()
+        self._model = TaskPoolModel(self.url_prefix)
 
     @web.authenticated
     @check_xsrf
@@ -159,15 +151,15 @@ class ManageTaskPoolsHandler(BaseHandler):
 class TaskPoolHandler(BaseHandler):
 
     def initialize(self):
-        self._model = TaskPoolModel()
+        self._model = TaskPoolModel(self.url_prefix)
 
     def _new(self, name):
-        url = self._model.new(name)
-        self.redirect(url)
+        self._model.new(name)
+        self.redirect(f'{self.base_url}/taskcreator/pools/{name}')
 
     def _remove(self, name):
         self._model.remove(name)
-        self.redirect('/taskcreator/pools')        
+        self.redirect(f'{self.base_url}/taskcreator/pools')        
 
     @web.authenticated
     @check_xsrf
@@ -178,7 +170,7 @@ class TaskPoolHandler(BaseHandler):
 class ManageTemplatesHandler(BaseHandler):
 
     def initialize(self):
-        self._model = TemplateModel()
+        self._model = TemplateModel(self.url_prefix)
 
     @web.authenticated
     @check_xsrf
@@ -195,15 +187,15 @@ class ManageTemplatesHandler(BaseHandler):
 class TemplateHandler(BaseHandler):
 
     def initialize(self):
-        self._model = TemplateModel()
+        self._model = TemplateModel(self.url_prefix)
 
     def _new(self, name):
-        url = self._model.new(name)
-        self.redirect(url)
+        path = self._model.new(name)
+        self.redirect(f'{self.base_url}/{path}')
 
     def _remove(self, name):
         self._model.remove(name)
-        self.redirect('/taskcreator/templates')        
+        self.redirect(f'{self.base_url}/taskcreator/templates')        
 
     @web.authenticated
     @check_xsrf

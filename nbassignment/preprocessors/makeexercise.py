@@ -41,7 +41,8 @@ class MakeExercise(Preprocessor):
         exercise.cells.extend(footer)
         
         nbformat.write(exercise, os.path.join(
-            'source',
+            resources['course_prefix'],
+            resources['source_dir'],
             resources['assignment'],
             '{}.ipynb'.format(resources['exercise'])
         ))

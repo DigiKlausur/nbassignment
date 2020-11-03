@@ -1,7 +1,7 @@
 import {EditableTable} from "./table.js";
 import Modal from "./modal.js";
 
-function addExercise(assignment) {
+function addExercise(assignment, base_url) {
 
     let body = $('<div/>');
     let table = $('<table/>').addClass('e2xtable');
@@ -17,7 +17,7 @@ function addExercise(assignment) {
     let buttons = {
         'Add Exercise': {
             click: function () {
-                window.open("/taskcreator/assignments/" + assignment + "/" + $('#exercise-name').val());
+                window.open(base_url + "/taskcreator/assignments/" + assignment + "/" + $('#exercise-name').val());
                 location.reload();
             },
             id: 'add-exercise-btn'
@@ -30,7 +30,7 @@ function addExercise(assignment) {
     new Modal(title, body, buttons).open();
 }
 
-function deleteExercise(exercise, assignment) {
+function deleteExercise(exercise, assignment, base_url) {
     let name = exercise.name;
 
     let body = $('<div/>');
@@ -39,7 +39,7 @@ function deleteExercise(exercise, assignment) {
     let buttons = {
         'Delete Exercise': {
             click: function () {
-                window.open("/taskcreator/assignments/" + assignment + "/remove/" + name, '_self');
+                window.open(base_url + "/taskcreator/assignments/" + assignment + "/remove/" + name, '_self');
             },
             id: 'delete-exercise-btn'
         },
@@ -51,7 +51,7 @@ function deleteExercise(exercise, assignment) {
     new Modal(title, body, buttons).open();
 }
 
-export default function addExerciseTable(exercises, assignment) {
+export default function addExerciseTable(exercises, assignment, base_url) {
     let table_data = {
         "id": "exercisetable",
         "columns": [
@@ -60,18 +60,16 @@ export default function addExerciseTable(exercises, assignment) {
         ],
         "entries": exercises,
         "deleteEntry": function (exercise) {
-            deleteExercise(exercise, assignment);
+            deleteExercise(exercise, assignment, base_url);
         }
     };
-    let table = new EditableTable(table_data, '_blank').make_table();
+    let table = new EditableTable(table_data, '_blank', base_url).make_table();
 
     let add_exercise = $('<button/>')
         .addClass('e2xbutton')
         .attr('id', 'add-exercise')
         .text('Add Exercise')
-        .click(function () {
-            addExercise(assignment);
-        });
+        .click(() => addExercise(assignment, base_url));
 
     let div = $('<div/>').attr('id', 'exercisediv');
     div.append(table);

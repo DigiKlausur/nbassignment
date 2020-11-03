@@ -29,7 +29,7 @@ function addOptionsTable(options) {
     $('#template-options').append(table);
 }
 
-export function exerciseOptions() {
+export function exerciseOptions(base_url) {
     let options = $('#exercise-options');
     let table = $('<table/>')
         .addClass('e2xtable')
@@ -44,17 +44,42 @@ export function exerciseOptions() {
     let body = $('<tbody/>');
 
     let row1 = $('<tr/>');
-    row1.append($('<td/>').text('Add Task Headers'))
+    row1.append($('<td/>').text('Add Task Headers'));
     row1.append($('<td/>').append($('<input/>')
         .attr('type', 'checkbox')
         .attr('id', 'task-headers')
         .attr('checked', true)
     ));
     body.append(row1);
+
+    let row2 = $('<tr/>');
+    row2.append($('<td/>').text('Kernel'));
+    row2.append($('<td/>').append($('<select/>')
+        .attr('id', 'kernel')
+    ));
+    body.append(row2);
     table.append(body);
 
     options.append(table);
 
+    $.ajax({
+        url: base_url + "/taskcreator/api/kernelspec",
+        type: "get",
+        success: function(response) {
+            let kernelspecs = $.parseJSON(response);
+            let select = $('#kernel');
+            for (const [kernel_name, kernelspec] of Object.entries(kernelspecs)) {
+                let option = $('<option/>')
+                    .attr('value', kernel_name)
+                    .append(kernelspec.spec.display_name);
+                select.append(option);
+            }
+        },
+        error: function(xhr) {
+            console.log('Oh no!')
+            console.log(xhr)
+        }
+    });
 }
 
 export function templateOptions(base_url) {
@@ -110,7 +135,10 @@ export function generateExercise(exercise, assignment, base_url) {
                 exercise_options[$(this).attr('id')] = $(this).val();
             }
         });
-        console.log(template_options);
+        $('#exercise-options select').each(function () {
+            exercise_options[$(this).attr('id')] = $(this).val();
+        });
+        console.log(exercise_options);
         let data = JSON.stringify({
             'template': template,
             'template_options': template_options,

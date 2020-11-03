@@ -6,7 +6,7 @@
     import {addTaskSelector, generateExercise, templateOptions, exerciseOptions} from "{{ base_url }}/taskcreator/static/js/editexercise.js";
     addTaskSelector({{ pools }}, "{{ base_url }}");
     templateOptions("{{ base_url }}");
-    exerciseOptions();
+    exerciseOptions("{{ base_url }}");
     generateExercise("{{ exercise }}", "{{ assignment }}", "{{ base_url }}");
 </script>
 {% endblock head %}

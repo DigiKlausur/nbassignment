@@ -1,15 +1,30 @@
 import os
 import nbformat
+from jupyter_client.kernelspec import KernelSpecManager
 from .preprocessor import Preprocessor
 
 class MakeExercise(Preprocessor):
+
+    def new_notebook(self, resources):
+        if 'kernel' in resources['exercise_options']:
+
+            kernelspec = KernelSpecManager().get_kernel_spec(resources['exercise_options']['kernel']).to_dict()
+            return nbformat.v4.new_notebook(metadata={
+                'kernelspec': {
+                    'name': resources['exercise_options']['kernel'],
+                    'display_name': kernelspec['display_name']
+                }
+            })
+        else:
+            return nbformat.v4.new_notebook()
+
     
     def get_cell_type(self, cell):
         if ('nbassignment' in cell.metadata) and ('type' in cell.metadata.nbassignment):
             return cell.metadata.nbassignment.type    
    
     def preprocess(self, resources):
-        exercise = nbformat.v4.new_notebook()
+        exercise = self.new_notebook(resources)
         template_path = os.path.join(
             resources['tmp_dir'],
             'template',

@@ -7,7 +7,7 @@
     addTaskSelector({{ pools }}, "{{ base_url }}");
     templateOptions("{{ base_url }}");
     exerciseOptions("{{ base_url }}");
-    generateExercise("{{ exercise }}", "{{ assignment }}", "{{ base_url }}");
+    generateExercise("{{ exercise }}", "{{ assignment }}", "{{ url_prefix }}", "{{ base_url }}");
 </script>
 {% endblock head %}
 

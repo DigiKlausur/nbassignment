@@ -111,12 +111,17 @@ export function templateOptions(base_url) {
     }
 }
 
-export function generateExercise(exercise, assignment, base_url) {
+export function generateExercise(exercise, assignment, url_prefix, base_url) {
     let generate_button = $('<button/>')
         .attr('id', 'generate-exercise')
         .text('Generate Exercise');
 
     generate_button.click(function () {
+        let exercise_url = base_url + '/notebooks/';
+        if (url_prefix.length > 0) {
+            exercise_url = exercise_url + url_prefix + '/';
+        }
+        exercise_url = exercise_url + 'source/' + assignment + '/' + exercise + '.ipynb';
         let template = $('#template').val();
         let tasks = [];
         $('#selected-tasks option').each(function () {
@@ -155,7 +160,7 @@ export function generateExercise(exercise, assignment, base_url) {
                 'resources': data
             },
             success: function(response) {
-                window.open(base_url + '/notebooks/source/' + assignment + '/' + exercise + '.ipynb', '_self');
+                window.open(exercise_url, '_self');
             },
             error: function(xhr) {
                 console.log('Oh no!')

@@ -30,21 +30,28 @@ define([
     }
 
     function file_menu() {
-        var open_menu = $('<span/>').attr('id', 'add-files').append($('<a/>').append('Add Files'));
+        let open_menu = $('<span/>').attr('id', 'add-files').append($('<a/>').append('Add Files'));
         open_menu.addClass('e2xbutton e2xsubmenu');
-        var menu = $('<ul/>').addClass('files_menu');
-        var options = [
+        let menu = $('<ul/>').addClass('files_menu');
+        let options = [
             ['Images', 'img'],
             ['Other Files', 'data']
         ]
 
         options.forEach(function (option) {
-            var li = $('<li/>').addClass('question_item');
+            let li = $('<li/>').addClass('question_item');
             li.append($('<a/>').append(option[0]));
             li.click(function () {
-                var path = Jupyter.notebook.notebook_path;
-                path = '/tree/' + path.replace(Jupyter.notebook.notebook_name, '') + option[1];
-                window.open(path);
+                let notebook_dir = Jupyter.notebook.notebook_path.replace(
+                    Jupyter.notebook.notebook_name, ''
+                );
+                let url = Jupyter.utils.url_path_join(
+                    Jupyter.notebook.base_url,
+                    'tree', 
+                    notebook_dir, 
+                    option[1]
+                );
+                window.open(url);
             })
             menu.append(li);
         })
@@ -54,7 +61,7 @@ define([
     }
 
     function tag_menu() {
-        var tag_selector = $('<span/>').attr('id', 'manage-tags');
+        let tag_selector = $('<span/>').attr('id', 'manage-tags');
         tag_selector.addClass('e2xbutton e2xsubmenu');
         tag_selector.append($('<a/>').append('Manage Tags'));
         tag_selector.click(function () {
@@ -64,7 +71,7 @@ define([
     }
 
     function load_css(file) {
-        var link = document.createElement("link");
+        let link = document.createElement("link");
         link.type = "text/css";
         link.rel = "stylesheet";
         link.href = require.toUrl('./' + file);
@@ -72,14 +79,14 @@ define([
     }
 
     function is_taskbook() {
-        var metadata = Jupyter.notebook.metadata;
+        let metadata = Jupyter.notebook.metadata;
         return (metadata.hasOwnProperty('nbassignment')) 
             && (metadata.nbassignment.hasOwnProperty('type'))
             && (metadata.nbassignment.type === 'task');
     }
 
     function is_templatebook() {
-        var metadata = Jupyter.notebook.metadata;
+        let metadata = Jupyter.notebook.metadata;
         return (metadata.hasOwnProperty('nbassignment')) 
             && (metadata.nbassignment.hasOwnProperty('type'))
             && (metadata.nbassignment.type === 'template');
@@ -146,7 +153,7 @@ define([
             .append($('<span/>').text(name))
             .insertAfter($('#ipython_notebook'));               
         
-        var div = $('<div/>').attr('id', 'questionbar');
+        let div = $('<div/>').attr('id', 'questionbar');
         div.append($('<span/>').text('e²x').addClass('questionbutton'));
 
         if (is_taskbook()) {
